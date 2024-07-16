@@ -9,16 +9,30 @@ import {
 import {style} from './style';
 import {useState} from 'react';
 import { lightGreen, red } from '../../shared/styleConstants';
+import { Conta, useAPI } from '../../../context/api/api';
 
 export default function FormAddConta({navigation, visible, hideModal }: any) {
+  const { createConta } = useAPI();
+  
   const [modalVisible, setModalVisible] = useState(false);
 
   const [banco, setBanco] = useState('');
   const [nome, setNome] = useState('');
 
+  const criar =() => {
+    const conta: Conta = {
+      id: 0,
+      nome: nome,
+      banco: banco,
+      vencimento: ''
+    }
+
+    createConta(conta);
+  }
+
   const handleSubmit = () => {
     hideModal();
-    console.log("TST");
+    criar();
   };
 
   return (

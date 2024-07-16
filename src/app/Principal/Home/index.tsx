@@ -4,11 +4,12 @@ import BalanceCircle from '../../components/BalanceCircle';
 import {white} from '../../shared/styleConstants';
 import LancamentosRecentes from '../../components/LancamentosRecentes';
 import {useState} from 'react';
-import FormAddConta from '../../components/AddConta';
+import FormAddConta from '../../components/FormAddConta';
 import FloatingButton from '../../components/FloatingButton';
+import FormAddLancamento from '../../components/FormAddLancamento';
 
 export default function Home({navigation}: any) {
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const showModal = () => {
     setModalVisible(true);
@@ -28,7 +29,7 @@ export default function Home({navigation}: any) {
         icone={'plus'}
       />
 
-      <FormAddConta visible={modalVisible} hideModal={hideModal}/>
+      <FormAddLancamento visible={modalVisible} hideModal={hideModal}/>
     </SafeAreaView>
   );
 }

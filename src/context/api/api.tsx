@@ -27,14 +27,15 @@ export interface Lancamento{
 
 export interface Conta {
     id: number,
-    conta: string,
+    nome: string,
     banco: string,
-    vencimento: string,
-    color: string
+    vencimento: string
 }
 
 interface APIContextData {
     getLancamentos(): Promise<Lancamento[]>
+    createLancamento(input : Lancamento): Promise<Lancamento>
+    createConta(input : Conta): Promise<Conta>
 }
 
 const APIContext = createContext<APIContextData>({} as APIContextData)
@@ -49,17 +50,60 @@ function APIProvider({ children }: any){
             })
             .catch((error) => {
                 showMessage({
-                    message: error  ,
-                    type: "danger"
-                })
+                    message: error.message || "Falha ao carregar lançamentos.",
+                    type: 'danger'
+                });
+                reject(error);
             })
+        })
+    }
+
+    const createLancamento = (input: Lancamento) : Promise<Lancamento> => {
+        return new Promise<Lancamento>((resolve, reject) => {
+            RequestBase<Lancamento>(verboseAPI.POST, "lancamento", input)
+            .then((result) => {
+                showMessage({
+                    message: "Lançamento criado com sucesso",
+                    type: 'success'
+                });
+                resolve(result);
+            })
+            .catch((e) => {
+                showMessage({
+                    message: e.message || "Erro ao criar lançamento",
+                    type: 'danger'
+                });
+                reject(e);
+            });
+        })
+    }
+
+    const createConta = (input: Conta) : Promise<Conta> => {
+        return new Promise<Conta>((resolve, reject) => {
+            RequestBase<Conta>(verboseAPI.POST, "conta", input)
+            .then((result) => {
+                showMessage({
+                    message: "Conta criada com sucesso",
+                    type: 'success'
+                });
+                resolve(result);
+            })
+            .catch((e) => {
+                showMessage({
+                    message: "Erro ao criar conta [" + e.message + "]"|| "Erro ao criar conta",
+                    type: 'danger'
+                });
+                reject(e);
+            });
         })
     }
 
     return (
         <APIContext.Provider 
             value={{
-                getLancamentos
+                getLancamentos,
+                createLancamento,
+                createConta
             }}
         >
             {children}

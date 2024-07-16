@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import api_url from "./config";
 import { showMessage } from "react-native-flash-message";
 
@@ -14,7 +14,6 @@ export const api = axios.create({
 })
 
 export default function RequestBase<T>(method: verboseAPI, url: string, params?: any): Promise<T>{
-    console.log("METODO: " + method + "URL: " + url)
     return new Promise<T>(async (resolve, reject) => {
         try{
 
@@ -46,9 +45,12 @@ export default function RequestBase<T>(method: verboseAPI, url: string, params?:
             }
 
             resolve(response.data)
-        }catch(error){
-            console.error(error);
-            throw error;
+        }catch(error: any){
+            showMessage({
+                message: "Verifique sua conexão com a internet [" + error.message + "]",
+                type: "danger",
+            })
+            reject(error);
         }
     })
 }

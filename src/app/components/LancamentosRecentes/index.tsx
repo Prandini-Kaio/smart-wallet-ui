@@ -4,6 +4,7 @@ import { Lancamento, TipoLancamento, TipoPagamento, useAPI } from "../../../cont
 import LancamentoCard from "./Lancamento";
 import { useEffect, useState } from "react";
 import { showMessage } from "react-native-flash-message";
+import { useIsFocused } from "@react-navigation/native";
 
 function mockLancamentos(){
     const lancamentos: Lancamento[] = [];
@@ -29,22 +30,21 @@ function mockLancamentos(){
 
 export default function LancamentosRecentes({ navigation }: any){
 
+    const focus = useIsFocused();
+
     const { getLancamentos } = useAPI();
+
+
 
     const [lancamentos, setLancamentos] = useState<Lancamento[]>([]);
 
     useEffect(() => {
-
-        setLancamentos(mockLancamentos());
         
         getLancamentos()
         .then((result) => {
-            setLancamentos(result.content);
-            showMessage({
-                message: "Erro ao carregar os lançamentos",
-                type: "danger"
-            })
-            if(result.content == null)
+            setLancamentos(result);
+            console.log(result == null);
+            if(result === null)
                 setLancamentos(mockLancamentos());
         })
         .catch((e) => {
@@ -52,8 +52,11 @@ export default function LancamentosRecentes({ navigation }: any){
                 message: "Erro ao carregar os lançamentos",
                 type: "danger"
             })
+            setLancamentos(mockLancamentos());
         })
-    }, [])
+
+        console.log(lancamentos);
+    }, [focus])
 
     const renderItem = (item: Lancamento) => {
         return (
