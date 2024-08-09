@@ -25,6 +25,14 @@ export interface Lancamento{
     icone: string
 }
 
+export interface Transacao {
+    id: number,
+    valor: number,
+    status: string,
+    dtVencimento: string,
+    descricao: string
+}
+
 export interface Conta {
     id: number,
     nome: string,
@@ -36,6 +44,7 @@ interface APIContextData {
     getLancamentos(): Promise<Lancamento[]>
     createLancamento(input : Lancamento): Promise<Lancamento>
     createConta(input : Conta): Promise<Conta>
+    getTransacoesByLancamento(idLancamento: number): Promise<Transacao[]>
 }
 
 const APIContext = createContext<APIContextData>({} as APIContextData)
@@ -98,12 +107,30 @@ function APIProvider({ children }: any){
         })
     }
 
+
+    const getTransacoesByLancamento = (idLancamento: number): Promise<Transacao[]> => {
+        return new Promise<Transacao[]>((resolve, reject) => {
+            RequestBase<Transacao[]>(verboseAPI.GET, 'transacao', `idLancamento=${idLancamento}`)
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((error) => {
+                showMessage({
+                    message: error.message || "Falha ao carregar transações.",
+                    type: 'danger'
+                });
+                reject(error);
+            })
+        })
+    }
+
     return (
         <APIContext.Provider 
             value={{
                 getLancamentos,
                 createLancamento,
-                createConta
+                createConta,
+                getTransacoesByLancamento
             }}
         >
             {children}

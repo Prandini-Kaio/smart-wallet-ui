@@ -2,10 +2,7 @@ import {Button, Modal, ScrollView, Text, TextInput, View} from 'react-native';
 import {style} from './style';
 import React, {useState} from 'react';
 import {Lancamento, TipoLancamento, TipoPagamento, useAPI} from '../../../context/api/api';
-import {Picker} from '@react-native-picker/picker';
-import {gray, gray2, lightGray} from '../../shared/styleConstants';
 import {InputPickerText, InputText} from '../FormInput';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
 
 export default function FormAddLancamento({
   navigation,

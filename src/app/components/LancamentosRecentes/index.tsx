@@ -5,11 +5,12 @@ import LancamentoCard from "./Lancamento";
 import { useEffect, useState } from "react";
 import { showMessage } from "react-native-flash-message";
 import { useIsFocused } from "@react-navigation/native";
+import CardTransacao from "../CardTransacao";
 
 function mockLancamentos(){
     const lancamentos: Lancamento[] = [];
     
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= 5; i++) {
         const lancamento: Lancamento = {
             id: i,
             tipoLancamento: Math.random() > 0.5 ? TipoLancamento.ENTRADA : TipoLancamento.SAIDA,
@@ -22,6 +23,7 @@ function mockLancamentos(){
             descricao: '---',
             icone: 'leaf'
         };
+
         lancamentos.push(lancamento);
     }
     
@@ -34,16 +36,26 @@ export default function LancamentosRecentes({ navigation }: any){
 
     const { getLancamentos } = useAPI();
 
-
-
     const [lancamentos, setLancamentos] = useState<Lancamento[]>([]);
+
+    const [idLancamento, setIdLancamento] = useState(0);
+
+    const [visible, setVisible] = useState(false);
+
+    const hide = () => {
+      setVisible(false);
+    }
+  
+    const show = (id: number) => {
+      setVisible(true);
+      setIdLancamento(id)
+    }
 
     useEffect(() => {
         
         getLancamentos()
         .then((result) => {
             setLancamentos(result);
-            console.log(result == null);
             if(result === null)
                 setLancamentos(mockLancamentos());
         })
@@ -53,9 +65,8 @@ export default function LancamentosRecentes({ navigation }: any){
                 type: "danger"
             })
             setLancamentos(mockLancamentos());
+            console.info("Consultando lançamentos");
         })
-
-        console.log(lancamentos);
     }, [focus])
 
     const renderItem = (item: Lancamento) => {
@@ -67,6 +78,7 @@ export default function LancamentosRecentes({ navigation }: any){
                 tipoPagamento={item.tipoPagamento}
                 tipoLancamento={item.tipoLancamento}
                 valor={item.valor}
+                onPress={() => show(item.id)}
             ></LancamentoCard>
         )
     }
@@ -83,6 +95,8 @@ export default function LancamentosRecentes({ navigation }: any){
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => renderItem(item)}
             />
+
+            <CardTransacao id={idLancamento} visible={visible} hide={hide}/>
         </SafeAreaView>
     )
 }
