@@ -2,7 +2,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {green, white} from './shared/styleConstants';
 import Principal from './Principal/principal';
 import ButtonTabBar from './components/ButtonTabBar';
-import Contas from './Secondary/Contas';
 import Secondary from './Secondary/secondary';
 
 const Tab = createBottomTabNavigator();

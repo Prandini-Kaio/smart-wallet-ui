@@ -3,10 +3,13 @@ import Principal from '../principal';
 import BalanceCircle from '../../components/BalanceCircle';
 import {white} from '../../shared/styleConstants';
 import LancamentosRecentes from '../../components/LancamentosRecentes';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import FormAddConta from '../../components/FormAddConta';
 import FloatingButton from '../../components/FloatingButton';
 import FormAddLancamento from '../../components/FormAddLancamento';
+import { TotalizadorFinanceiro, useAPI } from '../../../context/api/api';
+import { showMessage } from 'react-native-flash-message';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 export default function Home({navigation}: any) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,9 +22,29 @@ export default function Home({navigation}: any) {
     setModalVisible(false);
   };
 
+  const focus = useIsFocused();
+
+  const { getTotalizadorFinanceiro } = useAPI();
+
+  const [totalizador, setTotalizador] = useState<TotalizadorFinanceiro>();
+
+  useEffect(() => {
+    getTotalizadorFinanceiro('', '', '')
+    .then((result) => {
+      setTotalizador(result);
+    })
+    .catch((error) => {
+      showMessage({
+        message: "Erro ao consultar totalizador.",
+        type: "danger"
+      })
+      console.info("Erro ao consultar totalizador.");
+    });
+  }, [focus])
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: white}}>
-      <BalanceCircle total={123.2} />
+      <BalanceCircle total={totalizador?.total} />
       <LancamentosRecentes />
 
       <FloatingButton

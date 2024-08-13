@@ -1,4 +1,4 @@
-import {Conta} from '../../../context/api/api';
+import {Conta, TipoConta} from '../../../context/api/api';
 import {
   SafeAreaView,
   Text,
@@ -17,23 +17,26 @@ export default function ContasCarousell({navigation}: any) {
     {
       id: 1,
       banco: 'CAIXA',
-      conta: 'CORRENTE',
-      vencimento: '01/05',
-      color: green
+      nome: 'CORRENTE',
+      dtVencimento : '01/05',
+      saldoParcial: 120,
+      tipoConta: TipoConta.CORRENTE_POUPANCA
     },
     {
       id: 2,
       banco: 'ITAU',
-      conta: 'CORRENTE',
-      vencimento: '01/09',
-      color: purple
+      nome: 'CORRENTE',
+      dtVencimento: '01/09',
+      saldoParcial: 120,
+      tipoConta: TipoConta.ECONOMIA
     },
     {
       id: 3,
       banco: 'ITAU',
-      conta: 'CORRENTE',
-      vencimento: '01/09',
-      color: black
+      nome: 'CORRENTE',
+      dtVencimento: '01/09',
+      saldoParcial: 120,
+      tipoConta: TipoConta.INVESTIMENTO
     },
   ];
 
@@ -41,11 +44,12 @@ export default function ContasCarousell({navigation}: any) {
     return (
       <TouchableOpacity>
         <CardContas
-          conta={item.conta}
+          id={0} 
+          saldoParcial={0}
           banco={item.banco}
-          vencimento={item.vencimento}
-          color={item.color}
-        />
+          nome={item.nome}
+          dtVencimento={item.dtVencimento}
+          tipoConta={item.tipoConta}        />
       </TouchableOpacity>
     );
   };

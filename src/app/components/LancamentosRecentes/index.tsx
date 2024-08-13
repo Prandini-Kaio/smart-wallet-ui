@@ -1,6 +1,6 @@
 import { FlatList, SafeAreaView, Text } from "react-native";
 import style from "./style";
-import { Lancamento, TipoLancamento, TipoPagamento, useAPI } from "../../../context/api/api";
+import { Lancamento, StatusLancamento, TipoLancamento, TipoPagamento, useAPI } from "../../../context/api/api";
 import LancamentoCard from "./Lancamento";
 import { useEffect, useState } from "react";
 import { showMessage } from "react-native-flash-message";
@@ -21,7 +21,9 @@ function mockLancamentos(){
             dtCriacao: '---',
             parcelas: 0,
             descricao: '---',
-            icone: 'leaf'
+            icone: 'leaf',
+            status: StatusLancamento.EM_ABERTO,
+            dtAlteracaoStatus: ""
         };
 
         lancamentos.push(lancamento);
@@ -65,7 +67,7 @@ export default function LancamentosRecentes({ navigation }: any){
                 type: "danger"
             })
             setLancamentos(mockLancamentos());
-            console.info("Consultando lançamentos");
+            console.info("Erro ao consultar lançamentos");
         })
     }, [focus])
 

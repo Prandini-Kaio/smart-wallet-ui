@@ -2,7 +2,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import style from './style';
 import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
 import {gray, green} from '../../shared/styleConstants';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { TotalizadorFinanceiro, useAPI } from '../../../context/api/api';
+import { showMessage } from 'react-native-flash-message';
 
 export default function BalanceCircle({navigation, total}: any) {
 

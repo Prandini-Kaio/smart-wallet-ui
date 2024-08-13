@@ -7,9 +7,20 @@ export enum TipoLancamento{
     SAIDA = 'SAIDA'
 }
 
+export enum StatusLancamento{
+    EM_ABERTO = 'EM_ABERTO',
+    QUITADO = 'QUITADO'
+}
+
 export enum TipoPagamento{
     DEBITO = 'DEBITO', 
     CREDITO = 'CREDITO'
+}
+
+export enum TipoConta{
+    ECONOMIA = 'ECONOMIA',
+    INVESTIMENTO = 'INVESTIMENTO',
+    CORRENTE_POUPANCA = 'CORRENTE_POUPANCA'
 }
 
 export interface Lancamento{
@@ -17,10 +28,12 @@ export interface Lancamento{
     tipoLancamento: TipoLancamento,
     tipoPagamento: TipoPagamento,
     categoriaLancamento: string,
+    status: StatusLancamento,
     valor: number,
-    conta: string,
-    dtCriacao: string,
+    dtCriacao: string
+    dtAlteracaoStatus: string,
     parcelas: number,
+    conta: string,
     descricao: string,
     icone: string
 }
@@ -28,23 +41,35 @@ export interface Lancamento{
 export interface Transacao {
     id: number,
     valor: number,
-    status: string,
     dtVencimento: string,
+    dtPagamento: string,
+    status: string,
     descricao: string
 }
 
 export interface Conta {
     id: number,
-    nome: string,
     banco: string,
-    vencimento: string
+    nome: string,
+    dtVencimento: string,
+    saldoParcial: number,
+    tipoConta: TipoConta
+}
+
+export interface TotalizadorFinanceiro{
+    total: number,
+    totalEntrada: number,
+    totalSaida: number
 }
 
 interface APIContextData {
     getLancamentos(): Promise<Lancamento[]>
+    getTransacoesByLancamento(idLancamento: number): Promise<Transacao[]>
+    getTotalizadorFinanceiro(conta: string, dtInicio: string, dtFim: string): Promise<TotalizadorFinanceiro>,
+
+
     createLancamento(input : Lancamento): Promise<Lancamento>
     createConta(input : Conta): Promise<Conta>
-    getTransacoesByLancamento(idLancamento: number): Promise<Transacao[]>
 }
 
 const APIContext = createContext<APIContextData>({} as APIContextData)
@@ -53,7 +78,7 @@ function APIProvider({ children }: any){
 
     const getLancamentos = (): Promise<Lancamento[]> => {
         return new Promise<Lancamento[]>((resolve, reject) => {
-            RequestBase<Lancamento[]>(verboseAPI.GET, 'lancamento')
+            RequestBase<Lancamento[]>(verboseAPI.GET, 'lancamento/all')
             .then((result) => {
                 resolve(result);
             })
@@ -63,6 +88,39 @@ function APIProvider({ children }: any){
                     type: 'danger'
                 });
                 reject(error);
+            })
+        })
+    }
+
+    const getTransacoesByLancamento = (idLancamento: number): Promise<Transacao[]> => {
+        return new Promise<Transacao[]>((resolve, reject) => {
+            RequestBase<Transacao[]>(verboseAPI.GET, 'transacao', `idLancamento=${idLancamento}`)
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((error) => {
+                showMessage({
+                    message: error.message || "Falha ao carregar transações.",
+                    type: 'danger'
+                });
+                reject(error);
+            })
+        })
+    }
+
+    const getTotalizadorFinanceiro = (conta: string, dtInicio: string, dtFim: string) : Promise<TotalizadorFinanceiro> => {
+        const params = new URLSearchParams({
+            conta: conta,
+            dtInicio: dtInicio,
+            dtFim: dtFim
+        })
+        return new Promise<TotalizadorFinanceiro>((resolve, reject) => {
+            RequestBase<TotalizadorFinanceiro>(verboseAPI.GET, 'transacao/totalizador/periodo', params)
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((error) => {
+                reject(error)
             })
         })
     }
@@ -107,30 +165,14 @@ function APIProvider({ children }: any){
         })
     }
 
-
-    const getTransacoesByLancamento = (idLancamento: number): Promise<Transacao[]> => {
-        return new Promise<Transacao[]>((resolve, reject) => {
-            RequestBase<Transacao[]>(verboseAPI.GET, 'transacao', `idLancamento=${idLancamento}`)
-            .then((result) => {
-                resolve(result);
-            })
-            .catch((error) => {
-                showMessage({
-                    message: error.message || "Falha ao carregar transações.",
-                    type: 'danger'
-                });
-                reject(error);
-            })
-        })
-    }
-
     return (
         <APIContext.Provider 
             value={{
                 getLancamentos,
+                getTransacoesByLancamento,
+                getTotalizadorFinanceiro,
                 createLancamento,
-                createConta,
-                getTransacoesByLancamento
+                createConta
             }}
         >
             {children}

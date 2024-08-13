@@ -1,7 +1,7 @@
 import {Button, Modal, ScrollView, Text, TextInput, View} from 'react-native';
 import {style} from './style';
 import React, {useState} from 'react';
-import {Lancamento, TipoLancamento, TipoPagamento, useAPI} from '../../../context/api/api';
+import {Lancamento, StatusLancamento, TipoLancamento, TipoPagamento, useAPI} from '../../../context/api/api';
 import {InputPickerText, InputText} from '../FormInput';
 
 export default function FormAddLancamento({
@@ -35,7 +35,9 @@ export default function FormAddLancamento({
       parcelas: parseInt(parcelas),
       descricao: descricao,
       icone: icone,
-      dtCriacao: ''
+      dtCriacao: '',
+      status: StatusLancamento.EM_ABERTO,
+      dtAlteracaoStatus: ''
     }
 
     createLancamento(lancamento);
