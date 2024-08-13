@@ -66,7 +66,7 @@ interface APIContextData {
     getLancamentos(): Promise<Lancamento[]>
     getTransacoesByLancamento(idLancamento: number): Promise<Transacao[]>
     getTotalizadorFinanceiro(conta: string, dtInicio: string, dtFim: string): Promise<TotalizadorFinanceiro>,
-
+    getContas() : Promise<Conta[]>,
 
     createLancamento(input : Lancamento): Promise<Lancamento>
     createConta(input : Conta): Promise<Conta>
@@ -125,6 +125,18 @@ function APIProvider({ children }: any){
         })
     }
 
+    const getContas = () : Promise<Conta[]> => {
+        return new Promise<Conta[]>((resolve, reject) => {
+            RequestBase<Conta[]>(verboseAPI.GET, '/conta/all')
+            .then((result) => {
+                resolve(result);
+            })
+            .catch((error) => {
+                reject(error)
+            })
+        })
+    }
+
     const createLancamento = (input: Lancamento) : Promise<Lancamento> => {
         return new Promise<Lancamento>((resolve, reject) => {
             RequestBase<Lancamento>(verboseAPI.POST, "lancamento", input)
@@ -171,6 +183,7 @@ function APIProvider({ children }: any){
                 getLancamentos,
                 getTransacoesByLancamento,
                 getTotalizadorFinanceiro,
+                getContas,
                 createLancamento,
                 createConta
             }}

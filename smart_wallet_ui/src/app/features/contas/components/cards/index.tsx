@@ -1,14 +1,15 @@
-import {Conta, TipoConta, useAPI} from '../../../context/api/api';
+import {Conta, useAPI} from '../../../../shared/services/api/api-context';
 import {
   SafeAreaView,
   Text,
   FlatList,
   Dimensions,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import {style} from './style';
-import CardContas from './CardContas';
+import {style, style2} from './style';
 import { useEffect, useState } from 'react';
+import { lightGreen } from '../../../../shared/utils/style-constants';
 
 export default function ContasCarousell({navigation}: any) {
 
@@ -53,6 +54,34 @@ export default function ContasCarousell({navigation}: any) {
   // ];
 
   console.log("REMOVER COMENTARIOS CARD CONTAS");
+
+
+function CardContas({nome, banco, dtVencimento, tipoConta}: Conta) {
+  return (
+    <SafeAreaView style={style2.container}>
+      <View style={[style2.card, {backgroundColor: lightGreen}]}>
+        <Text style={style2.txtConta}>{banco}</Text>
+
+        <Text style={[style2.txtBold, {alignSelf: 'center'}]}>{tipoConta.toString()}</Text>
+
+        <View
+          style={style2.cardFoot}
+        >
+
+          <View style={{flexDirection: 'column'}}>
+            <Text style={style2.txtBold}>Conta</Text>
+            <Text style={style2.txtSmall}>{nome}</Text>
+          </View>
+
+          <View style={{flexDirection: 'column'}}>
+            <Text style={style2.txtBold}>Vencimento</Text>
+            <Text style={style2.txtSmall}>{dtVencimento}</Text>
+          </View>
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+}
 
   const renderItem = (item: Conta) => {
     return (
