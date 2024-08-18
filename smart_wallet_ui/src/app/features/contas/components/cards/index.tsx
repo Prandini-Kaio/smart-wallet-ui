@@ -1,4 +1,4 @@
-import {Conta, useAPI} from '../../../../shared/services/api/api-context';
+import {Conta, TipoConta, useAPI} from '../../../../shared/services/api/api-context';
 import {
   SafeAreaView,
   Text,
@@ -10,51 +10,56 @@ import {
 import {style, style2} from './style';
 import { useEffect, useState } from 'react';
 import { lightGreen } from '../../../../shared/utils/style-constants';
+import { useIsFocused } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
+
+
+function mockContas(){
+  
+  const contas: Conta[] = [];
+
+  for (let i = 1; i <= 5; i++) {
+      const conta: Conta = {
+        id: 1,
+        banco: 'CAIXA',
+        nome: 'CORRENTE',
+        dtVencimento : '01/05',
+        saldoParcial: 120,
+        tipoConta: TipoConta.CORRENTE_POUPANCA
+      };
+
+      contas.push(conta);
+  }
+  
+  return contas;
+}
+
+
 
 export default function ContasCarousell({navigation}: any) {
 
   const { getContas } = useAPI();
+  const focus = useIsFocused();
 
-  const {width: screenWidth} = Dimensions.get('window');
-
-  let [contas, setContas] = useState<Conta[]>();
+  const [contas, setContas] = useState<Conta[]>([]);
 
   useEffect(() => {
+        
     getContas()
-    .then((item) => {
-      setContas(item);
-    });
-  })
-
-  // contas = [
-  //   {
-  //     id: 1,
-  //     banco: 'CAIXA',
-  //     nome: 'CORRENTE',
-  //     dtVencimento : '01/05',
-  //     saldoParcial: 120,
-  //     tipoConta: TipoConta.CORRENTE_POUPANCA
-  //   },
-  //   {
-  //     id: 2,
-  //     banco: 'ITAU',
-  //     nome: 'CORRENTE',
-  //     dtVencimento: '01/09',
-  //     saldoParcial: 120,
-  //     tipoConta: TipoConta.ECONOMIA
-  //   },
-  //   {
-  //     id: 3,
-  //     banco: 'ITAU',
-  //     nome: 'CORRENTE',
-  //     dtVencimento: '01/09',
-  //     saldoParcial: 120,
-  //     tipoConta: TipoConta.INVESTIMENTO
-  //   },
-  // ];
-
-  console.log("REMOVER COMENTARIOS CARD CONTAS");
-
+    .then((result) => {
+        setContas(result);
+        if(result === null)
+            setContas(mockContas());
+    })
+    .catch((e) => {
+        showMessage({
+            message: "Erro ao carregar os lançamentos",
+            type: "danger"
+        })
+        setContas(mockContas());
+        console.info("Erro ao consultar lançamentos");
+    })
+}, [focus])
 
 function CardContas({nome, banco, dtVencimento, tipoConta}: Conta) {
   return (

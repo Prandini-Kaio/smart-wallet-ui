@@ -1,7 +1,7 @@
 import { FlatList, Text, SafeAreaView } from "react-native";
 import { style } from "./style";
 import CardGastos from "../../contas/components/gastos/gastos";
-import ContasCarousell from "../../contas/components/cards";
+import ContasCarousell from "./cards";
 import FloatingButton from "../../../shared/components/floating-button/floating-button";
 import { useState } from "react";
 import FormAddConta from "../components/form-conta/form-conta";

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {lightGray, lightGreen, white} from '../../shared/styleConstants';
+import {lightGray, lightGreen, white} from '../../../../shared/utils/style-constants';
 
 export const style = StyleSheet.create({
   container: {

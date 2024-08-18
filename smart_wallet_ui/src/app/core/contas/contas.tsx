@@ -3,7 +3,7 @@ import Contas from '../../features/contas/components/contas';
 
 const Stack = createNativeStackNavigator();
 
-export default function Secondary({navigation}: any) {
+export default function ContaScreen({navigation}: any) {
   return (
     <Stack.Navigator
       initialRouteName={'Home'}

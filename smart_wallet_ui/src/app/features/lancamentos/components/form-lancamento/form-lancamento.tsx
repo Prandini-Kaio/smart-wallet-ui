@@ -1,17 +1,18 @@
-import {Button, Modal, ScrollView, Text, TextInput, View} from 'react-native';
-import {style} from './style';
-import React, {useState} from 'react';
-import {Lancamento, StatusLancamento, TipoLancamento, TipoPagamento, useAPI} from '../../../../../../shared/services/api/api-context';
-import {InputPickerText, InputText} from '../../../../../../shared/components/input-form/input-form';
+import { Button, Modal, ScrollView, Text, TextInput, View } from 'react-native';
+import { style } from './style';
+import React, { useState } from 'react';
+import { StatusLancamento, TipoLancamento, TipoPagamento, useAPI } from '../../../../shared/services/api/api-context';
+import { InputPickerText, InputText } from '../../../../shared/components/input-form/input-form';
+import { LancamentoResponse } from '../../services/entity/lancamento.entity';
+import { useLancamentoService } from '../../services/lancamentos.service';
 
 export default function FormAddLancamento({
   navigation,
   visible,
   hideModal,
-}: any) 
-{
+}: any) {
 
-  const { createLancamento } = useAPI();
+  const { criarLancamento } = useLancamentoService();
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -25,7 +26,8 @@ export default function FormAddLancamento({
   const [icone, setIcone] = useState('');
 
   const criar = () => {
-    const lancamento: Lancamento = {
+
+    const lancamento: LancamentoResponse = {
       id: 0,
       tipoLancamento: tipoLancamento,
       tipoPagamento: tipoPagamento,
@@ -40,14 +42,14 @@ export default function FormAddLancamento({
       dtAlteracaoStatus: ''
     }
 
-    createLancamento(lancamento);
+    criarLancamento(lancamento);
   }
 
   const handleSubmit = () => {
     criar();
     hideModal();
   };
-  
+
   return (
     <Modal
       transparent={true}
@@ -64,8 +66,8 @@ export default function FormAddLancamento({
                 setTipoLancamento(itemValue)
               }
               items={[
-                {label: 'Entrada', value: 'ENTRADA'},
-                {label: 'Saida', value: 'SAIDA'},
+                { label: 'Entrada', value: 'ENTRADA' },
+                { label: 'Saida', value: 'SAIDA' },
               ]}
             />
 
@@ -76,8 +78,8 @@ export default function FormAddLancamento({
                 setTipoPagamento(itemValue)
               }
               items={[
-                {label: 'Débito', value: 'DEBITO'},
-                {label: 'Crédito', value: 'CREDITO'},
+                { label: 'Débito', value: 'DEBITO' },
+                { label: 'Crédito', value: 'CREDITO' },
               ]}
             />
 

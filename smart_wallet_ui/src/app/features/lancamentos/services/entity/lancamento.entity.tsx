@@ -1,4 +1,4 @@
-import { StatusLancamento, TipoLancamento, TipoPagamento } from "../../../../../../../src/context/api/api.tsx";
+import { StatusLancamento, TipoLancamento, TipoPagamento } from "../../../../shared/services/api/api-context";
 
 export type LancamentoResponse = {
   id: number;

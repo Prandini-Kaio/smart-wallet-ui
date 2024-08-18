@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { showMessage } from "react-native-flash-message";
-import enviroment from '../../../../enviroments/environments';
+import { IP_URL } from '../../../../environments/environments';
 
 export enum verboseAPI {
   GET = 1,
@@ -10,7 +10,7 @@ export enum verboseAPI {
 }
 
 export const api = axios.create({
-  baseURL: enviroment.BACKEND_URL,
+  baseURL: IP_URL,
 });
 
 export default function RequestBase<T>(method: verboseAPI, url: string, params?: any): Promise<T>{

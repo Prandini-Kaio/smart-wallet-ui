@@ -1,9 +1,9 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from '../../features/lancamentos/lancamento.module';
+import Lancamento from '../../features/lancamentos/lancamento.module';
 
 const Stack = createNativeStackNavigator();
 
-export default function Principal({navigation}: any) {
+export default function Home({navigation}: any) {
   return (
     <Stack.Navigator
       initialRouteName={'Home'}
@@ -14,7 +14,7 @@ export default function Principal({navigation}: any) {
 
         <Stack.Screen
           name="Home"
-          component={Home}
+          component={Lancamento}
         />
 
       </Stack.Group>

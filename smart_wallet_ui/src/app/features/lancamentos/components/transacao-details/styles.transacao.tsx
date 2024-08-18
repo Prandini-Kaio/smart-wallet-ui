@@ -1,12 +1,17 @@
-import {StyleSheet} from 'react-native';
-import {gray} from '../../../../shared/utils/style-constants';
+import { StyleSheet } from 'react-native';
+import { gray } from '../../../../shared/utils/style-constants';
 
 export const style = StyleSheet.create({
   container: {
     width: '100%',
+    padding: 15,
+    justifyContent: 'space-between'
+  },
+
+  inside: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 15,
+    width: '100%'
   },
 
   txtLabel: {
@@ -17,10 +22,25 @@ export const style = StyleSheet.create({
     paddingTop: 8,
   },
 
-  txtSecond: {
-    fontSize: 12,
+  txtTt: {
+    fontSize: 14,
     color: gray,
     textAlign: 'center',
-    paddingTop: 8,
+    paddingTop: 8
+  },
+
+  txtSecond: {
+    fontSize: 14,
+    color: gray,
+    textAlign: 'center',
+    paddingTop: 8
+  },
+
+  txtThrid: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: gray,
+    textAlign: 'center',
+    paddingTop: 8
   },
 });

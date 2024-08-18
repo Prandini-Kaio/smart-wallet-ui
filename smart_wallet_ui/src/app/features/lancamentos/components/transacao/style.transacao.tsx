@@ -3,8 +3,9 @@ import {black, gray, green, lightGreen, red, white, yellow } from '../../../../s
 
 export const style = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: lightGreen
   },
 
   cardBg: {
@@ -45,7 +46,7 @@ export const style = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
 
-    shadowColor: green,
+    shadowColor: '#FFF26',  
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 1,
     shadowRadius: 50,
@@ -59,18 +60,16 @@ export const style2 = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 5,
+    paddingHorizontal: 8,
     width: '100%',
-    height: 40,
-
+    marginVertical: 5,
     borderBottomColor: lightGreen,
     borderBottomWidth: 0.5
   },
 
   topOfContainer:{
-    justifyContent: 'space-between',
-    alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     
   },
 
@@ -82,6 +81,12 @@ export const style2 = StyleSheet.create({
     fontSize: 18,
     color: black,
     fontWeight: 'bold',
+  },
+
+  txtTt: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: gray,
   },
 
   txtSecond: {

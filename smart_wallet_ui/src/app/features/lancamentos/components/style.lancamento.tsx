@@ -1,13 +1,12 @@
 import {StyleSheet} from 'react-native';
-import {black, gray, green, red, white} from '../../../shared/utils/style-constants';
+import {black, gray, gray2, green, red, white} from '../../../shared/utils/style-constants';
 
 export default StyleSheet.create({
   container: {
-    flexDirection: 'row', // Alinha itens em uma linha
-    justifyContent: 'space-between', // Espaça os itens ao longo da linha
-    alignItems: 'center', // Alinha itens verticalmente no centro
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 16,
-    marginBottom: 5,
     backgroundColor: white,
   },
 
@@ -20,7 +19,7 @@ export default StyleSheet.create({
     height: 50,
     borderRadius: 25,
 
-    shadowColor: green,
+    shadowColor: gray2,
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.8,
     shadowRadius: 15,
@@ -35,7 +34,8 @@ export default StyleSheet.create({
 
   leftTexts: {
     flexDirection: 'column',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    marginLeft: 5
   },
 
   rightTexts: {

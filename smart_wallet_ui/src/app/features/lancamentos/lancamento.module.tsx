@@ -9,7 +9,7 @@ import { TotalizadorFinanceiro, useAPI } from '../../shared/services/api/api-con
 import { showMessage } from 'react-native-flash-message';
 import { useIsFocused } from '@react-navigation/native';
 
-export default function Home({navigation}: any) {
+export default function Lancamento({navigation}: any) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const showModal = () => {
