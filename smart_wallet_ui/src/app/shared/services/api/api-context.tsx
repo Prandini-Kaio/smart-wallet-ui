@@ -71,14 +71,14 @@ function APIProvider({ children }: any) {
     return new Promise((resolve, reject) => {
       RequestBase<string>(verboseAPI.GET, 'health/ping')
         .then(result => {
-          resolve(result === 'pong');
+          resolve(true);
         })
         .catch(error => {
           showMessage({
-            message: error.message || 'API fora do ar, verifique a conexão com a internet.',
+            message: error.content || 'API fora do ar, verifique a conexão com a internet.',
             type: 'danger',
           });
-          reject(error);
+          reject(false);
         });
     });
   }

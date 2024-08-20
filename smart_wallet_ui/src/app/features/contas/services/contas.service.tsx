@@ -1,4 +1,5 @@
 import {useAPI} from '../../../shared/services/api/api-context.tsx';
+import { formatDate } from '../../lancamentos/services/usecases/date-utils.service.tsx';
 import {TotalizadorGastos} from '../entities/conta.entity.tsx';
 
 const getMonthData = (date: Date) => {
@@ -101,10 +102,3 @@ export const useResumoFinanceiro = () => {
 
   return {fetchResumoFinanceiro};
 };
-
-function formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Janeiro é 0, por isso somamos 1
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}

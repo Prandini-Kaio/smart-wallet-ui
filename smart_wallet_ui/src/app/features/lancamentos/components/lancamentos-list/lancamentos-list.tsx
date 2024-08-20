@@ -12,6 +12,7 @@ import {useIsFocused} from '@react-navigation/native';
 import CardTransacao from '../transacao/transacao';
 import LancamentoCard from '../lancamento';
 import { LancamentoResponse } from '../../services/entity/lancamento.entity';
+import { useLancamentoService } from '../../services/lancamentos.service';
 
 function mockLancamentos() {
   const lancamentos: LancamentoResponse[] = [];
@@ -43,7 +44,7 @@ function mockLancamentos() {
 export default function LancamentosRecentes({navigation}: any) {
   const focus = useIsFocused();
 
-  const {getLancamentos} = useAPI();
+  const { consultar } = useLancamentoService();
 
   const [lancamentos, setLancamentos] = useState<LancamentoResponse[]>([]);
 
@@ -61,20 +62,16 @@ export default function LancamentosRecentes({navigation}: any) {
   };
 
   useEffect(() => {
-    getLancamentos()
-      .then(result => {
-        setLancamentos(result);
-        if (result === null) {
-          setLancamentos(mockLancamentos());
-        }
+    consultar()
+      .then((result) => {
+        setLancamentos(JSON.parse(result));
       })
       .catch(e => {
         showMessage({
           message: 'Erro ao carregar os lançamentos',
           type: 'danger',
         });
-        setLancamentos(mockLancamentos());
-        console.info('Erro ao consultar lançamentos');
+        console.log(e);
       });
   }, [focus]);
 

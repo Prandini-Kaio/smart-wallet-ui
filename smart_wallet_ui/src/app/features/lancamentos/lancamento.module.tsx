@@ -8,6 +8,7 @@ import FormAddLancamento from './components/form-lancamento/form-lancamento';
 import { TotalizadorFinanceiro, useAPI } from '../../shared/services/api/api-context';
 import { showMessage } from 'react-native-flash-message';
 import { useIsFocused } from '@react-navigation/native';
+import { formatDate } from './services/usecases/date-utils.service';
 
 export default function Lancamento({navigation}: any) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,7 +28,11 @@ export default function Lancamento({navigation}: any) {
   const [totalizador, setTotalizador] = useState<TotalizadorFinanceiro>();
 
   useEffect(() => {
-    getTotalizadorFinanceiro('', '', '')
+    const now = new Date();
+    const dayOne = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const dayLast = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+
+    getTotalizadorFinanceiro('', formatDate(dayOne), formatDate(dayLast))
     .then((result) => {
       setTotalizador(result);
     })
