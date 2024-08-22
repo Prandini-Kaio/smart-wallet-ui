@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { gray, lightGray } from "../../utils/style-constants";
+import { gray, lightGray, lightGreen } from "../../utils/style-constants";
 
 export const style = StyleSheet.create({
     label: {
@@ -21,7 +21,6 @@ export const style = StyleSheet.create({
 
       inputContainer: {
         height: 40,
-        width: '100%',
         borderColor: gray,
         borderWidth: 0.5,
         marginBottom: 20,

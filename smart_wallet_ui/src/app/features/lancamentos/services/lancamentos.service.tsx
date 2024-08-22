@@ -4,13 +4,15 @@ import { _cleanData, _storeData, _retrieveData } from "../../../shared/services/
 import { LancamentoResponse } from "./entity/lancamento.entity";
 import { assertEasingIsWorklet } from "react-native-reanimated/lib/typescript/animation/util";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContaService } from "../../contas/services/contas.service";
 
 export const useLancamentoService = () => {
 
     const LANCAMENTOS_PENDENTES_STORAGE_KEY = 'lancamentos-pendentes';
     const LANCAMENTOS_STORAGE_KEY = 'lancamentos';
+    const CATEGORIAS_LANCAMENTOS_STORAGE_KEY = 'categorias-lancamentos';
 
-    const { ping, createLancamento, getLancamentos } = useAPI();
+    const { ping, createLancamento, getLancamentos, getCategorias } = useAPI();
 
     const isConnected = async (): Promise<boolean> => {
         try {
@@ -44,9 +46,29 @@ export const useLancamentoService = () => {
         return lancamentos;
     }
 
+    const consultarCategorias = async () => {
+        console.log("Iniciando consulta de categorias.");
+    
+        await sincronizarCategorias(); // Sincroniza as categorias
+    
+        const categoriasString = await _retrieveData(CATEGORIAS_LANCAMENTOS_STORAGE_KEY);
+    
+        if (!categoriasString) {
+            return [];
+        }
+    
+        try {
+            const categorias = JSON.parse(categoriasString);
+            console.log(categorias)
+            return categorias;
+        } catch (error) {
+            console.error("Erro ao parsear categorias:", error);
+            return [];
+        }
+    }
 
     const read = async (key: string) => {
-        console.log(`Iniciando consulta a lançamentos com a chave [${key}].`);
+        console.log(`Iniciando consulta com a chave [${key}].`);
 
         try {
             const lancamentosString = await _retrieveData(key);
@@ -85,6 +107,17 @@ export const useLancamentoService = () => {
     }
 
     const sincronizar = async () => {
+
+        if(!isConnected()){
+            console.log("Conexão não estabelecida, verifique sua conexão com a internet.");
+            return;
+        }
+
+        await sincronizarLancamentos();
+        await sincronizarCategorias();
+    };
+
+    const sincronizarLancamentos = async () => {
         console.log("Iniciando sincronia de lançamentos.");
 
         if (!isConnected())
@@ -96,8 +129,8 @@ export const useLancamentoService = () => {
             if (lancamentosPendentes) {
 
                 console.log("Sincronizando lançamentos pendentes.");
-                
-                console.log("AAA "+lancamentosPendentes)
+
+                console.log("AAA " + lancamentosPendentes)
 
                 for (let index = 0; index < lancamentosPendentes.length; index++) {
                     const element = lancamentosPendentes[index];
@@ -108,7 +141,7 @@ export const useLancamentoService = () => {
                 console.log("Lançamentos pendentes sincronizados com sucesso!");
                 return;
             }
-        }catch(error){
+        } catch (error) {
             console.error(error);
         }
 
@@ -122,10 +155,28 @@ export const useLancamentoService = () => {
         console.log("Lançamentos sincronizados com sucesso!");
 
         return;
-    };
+    }
+
+    const sincronizarCategorias = async () => {
+        console.log("Iniciando sincronia de categorias.");
+
+        try {
+            const categorias = await getCategorias();
+            
+            if(categorias){
+                await _cleanData(CATEGORIAS_LANCAMENTOS_STORAGE_KEY);
+                await _storeData(CATEGORIAS_LANCAMENTOS_STORAGE_KEY, JSON.stringify(categorias));
+            }
+
+            console.log("Categorias sincronizadas com sucesso!");
+        }catch(error){
+            console.error(error);
+        }
+    }
 
     return {
         criarLancamento: criar,
-        consultar
+        consultar,
+        consultarCategorias
     };
 };

@@ -25,7 +25,7 @@ interface PickerItem {
 
 export const InputText = (props: InputTextProps) => {
   return (
-    <View>
+    <View style={{width: '25%', justifyContent: 'center'}}>
       <Text style={style.label}>{props.label}</Text>
       <TextInput
         style={style.input}
@@ -41,7 +41,7 @@ export const InputText = (props: InputTextProps) => {
 
 export const InputPickerText = (props: InputPickerTextProps) => {
   return (
-    <View>
+    <View style={{width:'50%'}}>
       <Text style={style.label}>{props.label}</Text>
       <View style={style.inputContainer}>
         <Picker

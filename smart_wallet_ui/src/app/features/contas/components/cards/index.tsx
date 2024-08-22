@@ -47,17 +47,15 @@ export default function ContasCarousell({navigation}: any) {
         
     getContas()
     .then((result) => {
+        console.log("ttt " + result)
         setContas(result);
-        if(result === null)
-            setContas(mockContas());
     })
     .catch((e) => {
         showMessage({
-            message: "Erro ao carregar os lançamentos",
+            message: "Erro ao carregar as contas",
             type: "danger"
         })
-        setContas(mockContas());
-        console.info("Erro ao consultar lançamentos");
+        console.info("Erro ao consultar contas");
     })
 }, [focus])
 
@@ -79,6 +77,11 @@ function CardContas({nome, banco, dtVencimento, tipoConta}: Conta) {
           </View>
 
           <View style={{flexDirection: 'column'}}>
+            <Text style={style2.txtBold}>R$</Text>
+            <Text style={style2.txtSmall}>{nome}</Text>
+          </View>
+
+          <View style={{flexDirection: 'column'}}>
             <Text style={style2.txtBold}>Vencimento</Text>
             <Text style={style2.txtSmall}>{dtVencimento}</Text>
           </View>
@@ -92,8 +95,8 @@ function CardContas({nome, banco, dtVencimento, tipoConta}: Conta) {
     return (
       <TouchableOpacity>
         <CardContas
-          id={0} 
-          saldoParcial={0}
+          id={item.id} 
+          saldoParcial={item.saldoParcial}
           banco={item.banco}
           nome={item.nome}
           dtVencimento={item.dtVencimento}

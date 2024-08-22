@@ -10,7 +10,7 @@ import { showMessage } from 'react-native-flash-message';
 import { useIsFocused } from '@react-navigation/native';
 import { formatDate } from './services/usecases/date-utils.service';
 
-export default function Lancamento({navigation}: any) {
+export default function Lancamento({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false);
 
   const showModal = () => {
@@ -51,7 +51,7 @@ export default function Lancamento({navigation}: any) {
       <LancamentosRecentes />
 
       <FloatingButton
-        onPress={showModal}
+        onPress={() => navigation.navigate('AddLancamento')}
         icone={'plus'}
       />
 

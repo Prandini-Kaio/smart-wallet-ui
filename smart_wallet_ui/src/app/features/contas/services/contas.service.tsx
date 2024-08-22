@@ -1,14 +1,15 @@
-import {useAPI} from '../../../shared/services/api/api-context.tsx';
+import { useAPI } from '../../../shared/services/api/api-context.tsx';
+import { _cleanData, _retrieveData, _storeData } from '../../../shared/services/asyncStorage/async.service.tsx';
 import { formatDate } from '../../lancamentos/services/usecases/date-utils.service.tsx';
-import {TotalizadorGastos} from '../entities/conta.entity.tsx';
+import { TotalizadorGastos } from '../entities/conta.entity.tsx';
 
 const getMonthData = (date: Date) => {
   const dtInicio = new Date(date.getFullYear(), date.getMonth(), 1);
   const dtFim = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-  const monthName = dtInicio.toLocaleString('default', {month: 'long'});
+  const monthName = dtInicio.toLocaleString('default', { month: 'long' });
 
-  return {dtInicio, dtFim, monthName};
+  return { dtInicio, dtFim, monthName };
 };
 
 const currentDate = new Date();
@@ -34,14 +35,63 @@ const {
   new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
 );
 
+export const useContaService = () => {
+
+  const CONTAS_STORAGE_KEY = "contas";
+
+  const { getContas } = useAPI();
+
+
+  const consultarContas = async () => {
+    console.log("Iniciando consulta de contas.");
+
+    await sincronizarContas(); // Sincroniza as categorias
+
+    const contasString = await _retrieveData(CONTAS_STORAGE_KEY);
+
+    if (!contasString) {
+      return [];
+    }
+
+    try {
+      const contas = JSON.parse(contasString);
+      return contas;
+    } catch (error) {
+      console.error("Erro ao parsear contas:", error);
+      return [];
+    }
+  }
+
+  const sincronizarContas = async () => {
+    console.log("Iniciando sincronia de categorias.");
+
+        try {
+            const contas = await getContas();
+            
+            if(contas){
+                await _cleanData(CONTAS_STORAGE_KEY);
+                await _storeData(CONTAS_STORAGE_KEY, JSON.stringify(contas));
+            }
+
+            console.log("Contas sincronizadas com sucesso!");
+        }catch(error){
+            console.error(error);
+        }
+  }
+
+  return {
+    consultarContas,
+  }
+}
+
 export const useResumoFinanceiro = () => {
-  const {getTotalizadorFinanceiro} = useAPI();
+  const { getTotalizadorFinanceiro } = useAPI();
 
   const getMonthData = (date: Date) => {
     const dtInicio = new Date(date.getFullYear(), date.getMonth(), 1);
     const dtFim = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    const monthName = dtInicio.toLocaleString('default', {month: 'long'});
-    return {dtInicio, dtFim, monthName};
+    const monthName = dtInicio.toLocaleString('default', { month: 'long' });
+    return { dtInicio, dtFim, monthName };
   };
 
   const fetchResumoFinanceiro = async () => {
@@ -100,5 +150,5 @@ export const useResumoFinanceiro = () => {
     return total;
   };
 
-  return {fetchResumoFinanceiro};
+  return { fetchResumoFinanceiro };
 };

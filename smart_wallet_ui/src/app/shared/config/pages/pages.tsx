@@ -1,49 +1,60 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {green, white} from '../../utils/style-constants';;
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { green, white } from '../../utils/style-constants';;
 import ButtonTabBar from '../../components/button-tabbar/button-tabbar';
 import ContaScreen from '../../../core/contas/contas';
 import Home from '../../../core/home/home';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AddLancamento from '../../../features/lancamentos/components/add-lancamento/add-lancamento';
 
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function Pages() {
   return (
-    <>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarShowLabel: false,
-          tabBarActiveTintColor: green,
-        }}>
+    <Stack.Navigator>
+      <Stack.Screen name="TabScreens" component={TabScreens} options={{ headerShown: false }} />
 
-        <Tab.Screen
-          name="Principal"
-          component={Home}
-          options={{
-            tabBarIcon: ({color, focused}) => (
-              <ButtonTabBar
-                defaultColor={white}
-                color={color}
-                focused={focused}
-                icon={'home'}></ButtonTabBar>
-            ),
-          }}
-        />
-
-        <Tab.Screen
-          name="Secondary"
-          component={ContaScreen}
-          options={{
-            tabBarIcon: ({color, focused}) => (
-              <ButtonTabBar
-                defaultColor={white}
-                color={color}
-                focused={focused}
-                icon={'cash'}></ButtonTabBar>
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </>
+      <Stack.Screen name="AddLancamento" component={AddLancamento} options={{ headerTitle: "Novo Lancamento" }} />
+    </Stack.Navigator>
   );
+}
+
+function TabScreens() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: green,
+      }}>
+
+      <Tab.Screen
+        name="Principal"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <ButtonTabBar
+              defaultColor={white}
+              color={color}
+              focused={focused}
+              icon={'home'}></ButtonTabBar>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Secondary"
+        component={ContaScreen}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <ButtonTabBar
+              defaultColor={white}
+              color={color}
+              focused={focused}
+              icon={'cash'}></ButtonTabBar>
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  )
 }

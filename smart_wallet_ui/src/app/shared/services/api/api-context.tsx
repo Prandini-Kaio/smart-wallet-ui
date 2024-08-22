@@ -58,6 +58,7 @@ interface APIContextData {
     dtFim: string,
   ): Promise<TotalizadorFinanceiro>;
   getContas(): Promise<Conta[]>;
+  getCategorias(): Promise<string[]>;
 
   createLancamento(input: LancamentoResponse): Promise<LancamentoResponse>;
   createConta(input: Conta): Promise<Conta>;
@@ -158,6 +159,18 @@ function APIProvider({ children }: any) {
     });
   };
 
+  const getCategorias = (): Promise<string[]> => {
+    return new Promise<string[]>((resolve, reject) => {
+      RequestBase<string[]>(verboseAPI.GET, 'lancamento/categoria')
+        .then(result => {
+          resolve(result);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  };
+
   const createLancamento = (input: LancamentoResponse): Promise<LancamentoResponse> => {
     return new Promise<LancamentoResponse>((resolve, reject) => {
       RequestBase<LancamentoResponse>(verboseAPI.POST, 'lancamento', input)
@@ -208,6 +221,7 @@ function APIProvider({ children }: any) {
         getTransacoesByLancamento,
         getTotalizadorFinanceiro,
         getContas,
+        getCategorias,
         createLancamento,
         createConta,
       }}>
