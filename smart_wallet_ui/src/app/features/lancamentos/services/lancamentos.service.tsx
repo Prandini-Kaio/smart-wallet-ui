@@ -75,7 +75,7 @@ export const useLancamentoService = () => {
 
             if (!lancamentosString) {
                 console.log(`Nenhum dado encontrado para a chave [${key}].`);
-                return [];
+                return "{}";
             }
 
             // console.log(`Dados brutos do storage: ${lancamentosString}.`);
@@ -86,12 +86,12 @@ export const useLancamentoService = () => {
                 return lancamentos;
             } catch (jsonError) {
                 console.error("Erro ao parsear JSON dos lançamentos:", jsonError);
-                return [];
+                return "{}";
             }
 
         } catch (error) {
             console.error(`Erro ao consultar lançamentos com a chave [${key}]:`, error);
-            return [];
+            return "{}";
         }
     };
 
@@ -130,15 +130,16 @@ export const useLancamentoService = () => {
 
                 console.log("Sincronizando lançamentos pendentes.");
 
-                console.log("AAA " + lancamentosPendentes)
-
                 for (let index = 0; index < lancamentosPendentes.length; index++) {
                     const element = lancamentosPendentes[index];
                     console.log(element)
                     await criar(element);
                 }
+
                 await _cleanData(LANCAMENTOS_PENDENTES_STORAGE_KEY);
+
                 console.log("Lançamentos pendentes sincronizados com sucesso!");
+
                 return;
             }
         } catch (error) {
