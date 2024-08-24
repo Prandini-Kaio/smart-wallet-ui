@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { black, green, white } from "../../../../shared/utils/style-constants";
+import { black, gray, green, white } from "../../../../shared/utils/style-constants";
 
 export default StyleSheet.create({
     container: {
@@ -8,9 +8,17 @@ export default StyleSheet.create({
         backgroundColor: white
     },
 
+    titleContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        paddingHorizontal: 5, 
+        borderBottomColor: gray, 
+        borderBottomWidth: 0.5
+    },
+
     title:{
         color: black,
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold'
     },
 

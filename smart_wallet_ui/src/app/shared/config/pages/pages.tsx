@@ -5,6 +5,7 @@ import ContaScreen from '../../../core/contas/contas';
 import Home from '../../../core/home/home';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddLancamento from '../../../features/lancamentos/components/add-lancamento/add-lancamento';
+import { VisualizarLancamentos } from '../../../features/visualizar-lancamentos/visualiza-lancamentos.module';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -14,6 +15,7 @@ export default function Pages() {
     <Stack.Navigator>
       <Stack.Screen name="TabScreens" component={TabScreens} options={{ headerShown: false }} />
 
+      <Stack.Screen name="VisualizarLancamentos" component={VisualizarLancamentos} options={{ headerTitle: "Visualizar Lancamentos" }} />
       <Stack.Screen name="AddLancamento" component={AddLancamento} options={{ headerTitle: "Novo Lancamento" }} />
     </Stack.Navigator>
   );

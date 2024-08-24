@@ -9,11 +9,7 @@ import { Conta, StatusLancamento, TipoLancamento, TipoPagamento } from "../../..
 import { useLancamentoService } from "../../services/lancamentos.service";
 import { useIsFocused } from "@react-navigation/native";
 import { useContaService } from "../../../contas/services/contas.service";
-
-interface PickerItem {
-    label: string;
-    value: string | number;
-}
+import { PickerItem } from "../../../../shared/utils/interface-utils";
 
 export default function AddLancamento({ navigation }: any) {
 
@@ -80,8 +76,8 @@ export default function AddLancamento({ navigation }: any) {
     useEffect(() => {
         consultarCategorias()
             .then((result) => {
-                const resultado:string[] = JSON.parse(result);
-                
+                const resultado: string[] = JSON.parse(result);
+
                 const categoriasItems: PickerItem[] = resultado.map(categoria => {
                     return {
                         label: categoria.charAt(0).toUpperCase() + categoria.slice(1).toLowerCase(),
@@ -95,38 +91,50 @@ export default function AddLancamento({ navigation }: any) {
 
         consultarContas().then((result) => {
             const resultado: Conta[] = JSON.parse(result);
-                const contaItems: PickerItem[] = resultado.flat().map(conta => {
-                    return {
-                        label: conta.banco.charAt(0).toUpperCase() + conta.banco.slice(1).toLowerCase(),
-                        value: conta.banco
-                    };
-                });
-                setContaItemsPicker(contaItems);
+            const contaItems: PickerItem[] = resultado.flat().map(conta => {
+                return {
+                    label: conta.banco.charAt(0).toUpperCase() + conta.banco.slice(1).toLowerCase(),
+                    value: conta.banco
+                };
+            });
+            setContaItemsPicker(contaItems);
         })
     }, [focus])
 
     const PickerRender = () => {
         return (
-            <View style={style.contaPicker}>
-                <Picker
-                    selectedValue={conta}
-                    onValueChange={(item) => setConta(item)}
-                    style={{ color: black, width: 130 }}
-                >
-                    {contaItemsPicker.map((item, index) => (
-                        <Picker.Item key={index} label={item.label} value={item.value} style={{ fontSize: 12, fontWeight: 'bold' }} />
-                    ))}
-                </Picker>
-            </View>
+            <Picker
+                selectedValue={conta}
+                onValueChange={(item) => setConta(item)}
+                style={{
+                    width: 125,
+                    color: black,
+                }}
+                dropdownIconColor={black}
+                mode='dropdown'
+            >
+                {contaItemsPicker.map((item, index) => (
+                    <Picker.Item
+                        key={index}
+                        label={item.label}
+                        value={item.value}
+                        style={{
+                            fontSize: 12,
+                            fontWeight: 'bold',
+                        }} />
+                ))}
+            </Picker>
         )
     }
 
     return (
         <View style={style.container}>
 
-            <View style={style.sendToContainer}>
+            <View style={{ ...style.sendToContainer, zIndex: 1 }}>
                 <Text style={{ fontSize: 16, color: black, fontWeight: "bold" }}>Send to</Text>
-                <PickerRender />
+                <View style={style.contaPicker}>
+                    <PickerRender />
+                </View>
             </View>
 
             <View style={style.moneyContaineir}>

@@ -4,7 +4,6 @@ import {white} from '../../shared/utils/style-constants';
 import LancamentosRecentes from './components/lancamentos-list/lancamentos-list';
 import {useEffect, useState} from 'react';
 import FloatingButton from '../../shared/components/floating-button/floating-button';
-import FormAddLancamento from './components/form-lancamento/form-lancamento';
 import { TotalizadorFinanceiro, useAPI } from '../../shared/services/api/api-context';
 import { showMessage } from 'react-native-flash-message';
 import { useIsFocused } from '@react-navigation/native';
@@ -48,14 +47,12 @@ export default function Lancamento({ navigation }: any) {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: white}}>
       <BalanceCircle total={totalizador?.total} />
-      <LancamentosRecentes />
+      <LancamentosRecentes navigation={navigation}/>
 
       <FloatingButton
         onPress={() => navigation.navigate('AddLancamento')}
         icone={'plus'}
       />
-
-      <FormAddLancamento visible={modalVisible} hideModal={hideModal}/>
     </SafeAreaView>
   );
 }

@@ -59,7 +59,6 @@ export const useLancamentoService = () => {
     
         try {
             const categorias = JSON.parse(categoriasString);
-            console.log(categorias)
             return categorias;
         } catch (error) {
             console.error("Erro ao parsear categorias:", error);
@@ -139,8 +138,6 @@ export const useLancamentoService = () => {
                 await _cleanData(LANCAMENTOS_PENDENTES_STORAGE_KEY);
 
                 console.log("Lançamentos pendentes sincronizados com sucesso!");
-
-                return;
             }
         } catch (error) {
             console.error(error);

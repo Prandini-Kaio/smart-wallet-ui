@@ -6,18 +6,19 @@ export const style = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: white
+        backgroundColor: white,
+        padding: 5
     },
 
     sendToContainer: {
-        width: '100%', 
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         paddingHorizontal: 10,
         paddingVertical: 5
     },
 
-    moneyContaineir:{
+    moneyContaineir: {
         backgroundColor: gray2,
         alignItems: 'center',
         justifyContent: 'center',
@@ -29,11 +30,11 @@ export const style = StyleSheet.create({
     },
 
     contaPicker: {
-        height: 25,
-        width: 120,
-        borderRadius: 30,
+        height:'30%', 
         backgroundColor: lightGreen,
+        alignItems: 'center',
         justifyContent: 'center',
+        borderRadius: 30
     },
 
     txtConta: {

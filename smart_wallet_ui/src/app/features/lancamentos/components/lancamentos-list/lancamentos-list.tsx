@@ -1,4 +1,4 @@
-import {FlatList, SafeAreaView, Text} from 'react-native';
+import { FlatList, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import style from './style.lancamentos';
 import {
   StatusLancamento,
@@ -6,13 +6,14 @@ import {
   TipoPagamento,
   useAPI,
 } from '../../../../shared/services/api/api-context';
-import {useEffect, useState} from 'react';
-import {showMessage} from 'react-native-flash-message';
-import {useIsFocused} from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { showMessage } from 'react-native-flash-message';
+import { useIsFocused } from '@react-navigation/native';
 import CardTransacao from '../transacao/transacao';
 import LancamentoCard from '../lancamento';
 import { LancamentoResponse } from '../../services/entity/lancamento.entity';
 import { useLancamentoService } from '../../services/lancamentos.service';
+import { gray, lightGreen } from '../../../../shared/utils/style-constants';
 
 function mockLancamentos() {
   const lancamentos: LancamentoResponse[] = [];
@@ -41,7 +42,7 @@ function mockLancamentos() {
   return lancamentos;
 }
 
-export default function LancamentosRecentes({navigation}: any) {
+export default function LancamentosRecentes({ navigation }: any) {
   const focus = useIsFocused();
 
   const { consultar } = useLancamentoService();
@@ -91,13 +92,18 @@ export default function LancamentosRecentes({navigation}: any) {
 
   return (
     <SafeAreaView style={style.container}>
-      <Text style={style.title}>LANCAMENTOS RECENTES</Text>
+      <View style={style.titleContainer}>
+        <Text style={style.title}>LANCAMENTOS RECENTES</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('VisualizarLancamentos')}>
+          <Text style={{color: lightGreen, fontWeight: 'bold'}}>Ver todos</Text>
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         style={style.list}
         data={lancamentos}
         keyExtractor={item => item.id.toString()}
-        renderItem={({item}) => renderItem(item)}
+        renderItem={({ item }) => renderItem(item)}
       />
 
       <CardTransacao lancamento={lancamento} visible={visible} hide={hide} />
