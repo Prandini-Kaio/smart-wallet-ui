@@ -17,7 +17,7 @@ export const FilterPicker = (props: PickerProps) => {
             <Picker
                 selectedValue={props.selectedValue}
                 onValueChange={props.onValueChange}
-                style={{ color: black, width: '125%' }}
+                style={{ color: black, width: '120%' }}
                 dropdownIconColor={black}
                 dropdownIconRippleColor={white}
             >
@@ -27,7 +27,7 @@ export const FilterPicker = (props: PickerProps) => {
                         label={item.label}
                         value={item.value}
                         style={{
-                            fontSize: 8,
+                            fontSize: 10,
                             fontWeight: 'bold',
                         }}
                     />

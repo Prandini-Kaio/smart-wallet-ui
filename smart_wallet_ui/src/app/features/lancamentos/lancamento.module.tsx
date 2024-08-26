@@ -22,7 +22,7 @@ export default function Lancamento({ navigation }: any) {
 
   const focus = useIsFocused();
 
-  const { getTotalizadorFinanceiro } = useAPI();
+  const { getTotalizadorPeriodo } = useAPI();
 
   const [totalizador, setTotalizador] = useState<TotalizadorFinanceiro>();
 
@@ -31,7 +31,7 @@ export default function Lancamento({ navigation }: any) {
     const dayOne = new Date(now.getFullYear(), now.getMonth() + 1, 1);
     const dayLast = new Date(now.getFullYear(), now.getMonth() + 2, 0);
 
-    getTotalizadorFinanceiro('', formatDate(dayOne), formatDate(dayLast))
+    getTotalizadorPeriodo('', formatDate(dayOne), formatDate(dayLast))
     .then((result) => {
       setTotalizador(result);
     })

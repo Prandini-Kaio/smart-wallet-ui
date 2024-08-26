@@ -1,4 +1,4 @@
-import { Button, Switch, Text, TextInput, TouchableHighlight, View } from "react-native"
+import { Button, SafeAreaView, Switch, Text, TextInput, TouchableHighlight, View } from "react-native"
 import { black, gold, gray, gray2, green, lightGray, lightGreen, white, yellow } from "../../../../shared/utils/style-constants"
 import { style } from "./style"
 import { useEffect, useState } from "react"
@@ -128,7 +128,7 @@ export default function AddLancamento({ navigation }: any) {
     }
 
     return (
-        <View style={style.container}>
+        <SafeAreaView style={style.container}>
 
             <View style={{ ...style.sendToContainer, zIndex: 1 }}>
                 <Text style={{ fontSize: 16, color: black, fontWeight: "bold" }}>Send to</Text>
@@ -226,6 +226,6 @@ export default function AddLancamento({ navigation }: any) {
                     </View>
                 </TouchableHighlight>
             </View>
-        </View >
+        </SafeAreaView >
     )
 }

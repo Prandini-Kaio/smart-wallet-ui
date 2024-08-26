@@ -14,3 +14,13 @@ export type LancamentoResponse = {
   descricao: string;
   icone: string;
 };
+
+export type LancamentoFilter = {
+  tipo: TipoLancamento | string;
+  categoria: string;
+  tipoPagamento: TipoPagamento | string;
+  status: StatusLancamento | string;
+  dtInicio: string;
+  dtFim: string;
+  conta: string;
+}

@@ -85,7 +85,7 @@ export const useContaService = () => {
 }
 
 export const useResumoFinanceiro = () => {
-  const { getTotalizadorFinanceiro } = useAPI();
+  const { getTotalizadorPeriodo } = useAPI();
 
   const getMonthData = (date: Date) => {
     const dtInicio = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -120,17 +120,17 @@ export const useResumoFinanceiro = () => {
     );
 
     const [totalAtual, totalAnterior, totalProximo] = await Promise.all([
-      getTotalizadorFinanceiro(
+      getTotalizadorPeriodo(
         '',
         formatDate(dtInicioAtual),
         formatDate(dtFimAtual),
       ),
-      getTotalizadorFinanceiro(
+      getTotalizadorPeriodo(
         '',
         formatDate(dtInicioAnterior),
         formatDate(dtFimAnterior),
       ),
-      getTotalizadorFinanceiro(
+      getTotalizadorPeriodo(
         '',
         formatDate(dtInicioProximo),
         formatDate(dtFimProximo),

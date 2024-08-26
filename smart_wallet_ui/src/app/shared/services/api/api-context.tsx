@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import RequestBase, { verboseAPI } from './api';
 import { showMessage } from 'react-native-flash-message';
-import { LancamentoResponse } from '../../../features/lancamentos/services/entity/lancamento.entity';
+import { LancamentoFilter, LancamentoResponse } from '../../../features/lancamentos/services/entity/lancamento.entity';
 
 export enum TipoLancamento {
   ENTRADA = 'ENTRADA',
@@ -52,15 +52,16 @@ interface APIContextData {
   ping(): Promise<boolean>;
   getLancamentos(): Promise<LancamentoResponse[]>;
   getTransacoesByLancamento(idLancamento: number): Promise<Transacao[]>;
-  getTotalizadorFinanceiro(
+  getTotalizadorFilter(filter: LancamentoFilter): Promise<TotalizadorFinanceiro>;
+  getTotalizadorPeriodo(
     conta: string,
     dtInicio: string,
     dtFim: string,
-  ): Promise<TotalizadorFinanceiro>;
-  getContas(): Promise<Conta[]>;
-  getCategorias(): Promise<string[]>;
-
-  createLancamento(input: LancamentoResponse): Promise<LancamentoResponse>;
+    ): Promise<TotalizadorFinanceiro>;
+    getContas(): Promise<Conta[]>;
+    getCategorias(): Promise<string[]>;
+    
+    createLancamento(input: LancamentoResponse): Promise<LancamentoResponse>;
   createConta(input: Conta): Promise<Conta>;
 }
 
@@ -122,7 +123,33 @@ function APIProvider({ children }: any) {
     });
   };
 
-  const getTotalizadorFinanceiro = (
+  const getTotalizadorFilter = (
+    filter: LancamentoFilter
+  ): Promise<TotalizadorFinanceiro> => {
+
+    const params = new URLSearchParams({
+      tipo: filter.tipo,
+      categoria: filter.categoria,
+      tipoPagamento: filter.tipoPagamento,
+      status: filter.status,
+      dtInicio: filter.dtInicio,
+      dtFim: filter.dtFim,
+      conta: filter.conta
+    });
+
+    return new Promise<TotalizadorFinanceiro>((resolve, reject) => {
+      RequestBase<TotalizadorFinanceiro>(verboseAPI.GET, 'transacao/totalizador', params)
+      .then(result => {
+        resolve(result);
+      })
+      .catch(error => {
+        reject(error);
+      });
+
+    });
+  }
+
+  const getTotalizadorPeriodo = (
     conta: string,
     dtInicio: string,
     dtFim: string,
@@ -219,7 +246,8 @@ function APIProvider({ children }: any) {
         ping,
         getLancamentos,
         getTransacoesByLancamento,
-        getTotalizadorFinanceiro,
+        getTotalizadorFilter,
+        getTotalizadorPeriodo,
         getContas,
         getCategorias,
         createLancamento,
