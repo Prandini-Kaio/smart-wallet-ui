@@ -5,7 +5,7 @@ export const style = StyleSheet.create({
     container: {
         width: '30%',
         height: 100,
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20,
@@ -15,6 +15,7 @@ export const style = StyleSheet.create({
 
     moneyTxt: {
         color: black,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: 13
     }
 })
