@@ -1,7 +1,8 @@
-import {Text, TouchableOpacity, View} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import style from './style.lancamento';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TipoLancamento} from '../../../shared/services/api/api-context';
+import { TipoLancamento } from '../../../shared/services/api/api-context';
+import { green, red } from '../../../shared/utils/style-constants';
 
 function isEntrada(tipo: TipoLancamento) {
   return tipo == TipoLancamento.ENTRADA;
@@ -16,10 +17,11 @@ export default function LancamentoCard({
   tipoPagamento,
   tipoLancamento,
   valor,
+  parcelas
 }: any) {
   return (
     <TouchableOpacity style={style.container} onPress={onPress}>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <View style={style.iconContainer}>
           <Icon style={style.icon} name={icon} />
         </View>
@@ -31,12 +33,13 @@ export default function LancamentoCard({
       </View>
 
       <View style={style.rightTexts}>
-        <Text
-          style={
-            isEntrada(tipoLancamento) ? style.debitText : style.creditText
-          }>
-          {isEntrada(tipoLancamento) ? '+' : '-'} R$ {valor}
-        </Text>
+        <View style={{flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between'}}>
+          <Text
+            style={{...style.moneyTxt, color: tipoLancamento == TipoLancamento.ENTRADA ? green : red}}>
+            {isEntrada(tipoLancamento) ? '+' : '-'} R$ {valor}
+          </Text>
+          <Text style={{fontSize: 10}}>/{parcelas}</Text>
+        </View>
 
         <Text style={style.alternatText}>{tipoPagamento}</Text>
       </View>

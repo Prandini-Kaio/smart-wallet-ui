@@ -5,19 +5,20 @@ import { FilterPicker } from "../filter-picker/filter-picker";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import DatePicker from "react-native-date-picker";
 import { PickerItem } from "../../../../shared/utils/interface-utils";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { LancamentoFilter } from "../../../lancamentos/services/entity/lancamento.entity";
 import { Conta, StatusLancamento, TipoLancamento, TipoPagamento, TotalizadorFinanceiro, useAPI } from "../../../../shared/services/api/api-context";
 import { formatDateTime } from "../../../lancamentos/services/usecases/date-utils.service";
 import { useLancamentoService } from "../../../lancamentos/services/lancamentos.service";
 import { useContaService } from "../../../contas/services/contas.service";
 import { useIsFocused } from "@react-navigation/native";
+import { StatusTransacaoEnum, TransacaoFilter } from "../../services/entity/transacao-entity";
+import { getTotalizador } from "../../services/repository/transacao-repository";
 
-export const TransacaoHeader = () => {
+export const TransacaoHeader = ({handleChange}: any) => {
 
     const focus = useIsFocused();
 
-    const { getTotalizadorFilter } = useAPI();
     const { consultarCategorias } = useLancamentoService();
     const { consultarContas } = useContaService();
 
@@ -39,27 +40,34 @@ export const TransacaoHeader = () => {
     const [tipoPagamentoItemsPicker, setTipoPagamentoItemsPicker] = useState<PickerItem[]>([{ label: 'Crédito', value: 'CREDITO' }, { label: 'Débito', value: 'DEBITO' }]);
 
     const [status, setStatus] = useState('')
-    const [statusItemsPicker, setStatusItemsPicker] = useState<PickerItem[]>([{ label: 'Em aberto', value: 'EM_ABERTO' }, { label: 'Quitado', value: 'QUITADO' }]);
+    const [statusItemsPicker, setStatusItemsPicker] = useState<PickerItem[]>([
+        { label: 'Atrasado', value: 'ATRASADO' },
+        { label: 'Cancelado', value: 'CANCELADO' },
+        { label: 'Pago', value: 'PAGO' },
+        { label: 'Pendente', value: 'PENDENTE' }
+    ]);
 
     const [conta, setConta] = useState('');
     const [contasItemsPicker, setContasItemsPicker] = useState<PickerItem[]>([]);
 
-    const [filter, setFilter] = useState<LancamentoFilter>();
+    const [filter, setFilter] = useState<TransacaoFilter>();
 
     const handleFind = () => {
-        const f: LancamentoFilter = {
+        const f: TransacaoFilter = {
+            id: null,
             tipo: tipo != '...' ? TipoLancamento[tipo as keyof typeof TipoLancamento] : '',
             categoria: categoria != '...' ? categoria : '',
-            tipoPagamento:  tipoPagamento != '...' ? TipoPagamento[tipo as keyof typeof TipoPagamento] : '',
-            status: status != '...' ? StatusLancamento[status as keyof typeof StatusLancamento] : '',
+            pagamento:  tipoPagamento != '...' ? tipoPagamento : '',
+            status: status != '...' ? status : '',
             dtInicio: formatDateTime(dtInicio),
             dtFim: formatDateTime(dtFim),
             conta: conta != '...' ? conta : '',
         }
 
         setFilter(f);
+        handleChange(f);
 
-        getTotalizadorFilter(f)
+        getTotalizador(f)
             .then(result => {
                 setTotalizador(result);
             })
@@ -237,13 +245,13 @@ export const TransacaoHeader = () => {
                 }}
             />
 
-            <View style={{ width: '40%', justifyContent: 'center' }}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <TouchableHighlight
                     activeOpacity={0.5}
                     underlayColor={white}
                     onPress={() => handleFind()}
                 >
-                    <View style={{ backgroundColor: gold, padding: 10, marginVertical: 10, borderRadius: 30, alignItems: 'center' }}>
+                    <View style={{ width: 200, backgroundColor: gold, padding: 10, marginVertical: 10, borderRadius: 30, alignItems: 'center' }}>
                         <Text style={{ color: black, fontWeight: 'bold' }}>Buscar</Text>
                     </View>
                 </TouchableHighlight>

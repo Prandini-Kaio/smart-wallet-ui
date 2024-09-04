@@ -85,6 +85,7 @@ export default function LancamentosRecentes({ navigation }: any) {
         tipoPagamento={item.tipoPagamento}
         tipoLancamento={item.tipoLancamento}
         valor={item.valor}
+        parcelas={item.parcelas}
         onPress={() => show(item)}
       />
     );

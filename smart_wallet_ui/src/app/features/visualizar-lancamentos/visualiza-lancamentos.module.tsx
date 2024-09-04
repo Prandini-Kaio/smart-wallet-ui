@@ -1,30 +1,64 @@
-import { Text, View } from "react-native"
+import { FlatList, SafeAreaView, Text, View } from "react-native"
 import { black, gold, gray, green, lightGreen, red, white } from "../../shared/utils/style-constants"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { TransacaoHeader } from "./components/transacao-header/transacao-header"
+import { TransacaoItem } from "./components/transacao-item/transacao-item"
+import { useEffect, useState } from "react"
+import { LancamentoResponse } from "../lancamentos/services/entity/lancamento.entity"
+import { TransacaoResponse } from "../lancamentos/services/entity/transacao.entity"
+import { StatusLancamento, TipoLancamento, TipoPagamento, useAPI } from "../../shared/services/api/api-context"
+import { StatusTransacaoEnum, TransacaoFilter } from "./services/entity/transacao-entity"
 
 export const VisualizarLancamentos = () => {
+
+    const { getTransacoes } = useAPI();
+
+    const [transacoes, setTransacoes] = useState<TransacaoResponse[]>();
+
+
+    const [filter, setFilter] = useState<TransacaoFilter>({
+        id: null,
+        categoria: '',
+        tipo: TipoLancamento.SAIDA,
+        pagamento: TipoPagamento.CREDITO,
+        status: StatusTransacaoEnum.PENDENTE,
+        conta: '',
+        dtInicio: '',
+        dtFim: ''
+    });
+
+    useEffect(() => {
+        getTransacoes(filter)
+        .then(result => {
+            console.log('AAA');
+            setTransacoes(result);
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }, [filter]);
+
+
+    const renderItem = (item: TransacaoResponse) => {
+        return (
+            <TransacaoItem 
+                transacao={item}                
+            />
+        )
+    }
+
     return (
         <View style={{ flex: 1, backgroundColor: white }}>
-            <TransacaoHeader />
-            <View style={{borderTopColor: black, borderTopWidth: 0.5, borderTopEndRadius: 20}}>
-                <View style={{backgroundColor: lightGreen, height:'100%', alignItems: 'center'}}>
-                    <View style={{
-                            backgroundColor: black, 
-                            width: '90%', 
-                            height: '8%',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between'
-                        }}
-                    >
-                        <Icon name="beach" size={24}/>
-                        <Text>Carro [1/2]</Text>
-                        <Text>R$ 100,00</Text>
-                        <Text>10/12/24</Text>
-                        <Text>PAGO</Text>
-                    </View>
-                </View>
+            <TransacaoHeader handleChange={setFilter}/>
+            <View style={{ borderTopColor: black, borderTopWidth: 0.5, borderTopEndRadius: 20 }}>
+                <SafeAreaView style={{ height: '78%', alignItems: 'center' }}>
+
+                    <FlatList 
+                        data={transacoes}
+                        keyExtractor={item => item.id.toString()}
+                        renderItem={({item}) => renderItem(item)}
+                    />
+                </SafeAreaView>
             </View>
         </View>
     )

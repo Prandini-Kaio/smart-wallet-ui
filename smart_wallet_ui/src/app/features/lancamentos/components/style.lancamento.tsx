@@ -39,6 +39,7 @@ export default StyleSheet.create({
   },
 
   rightTexts: {
+    width: 120,
     flexDirection: 'column',
     alignItems: 'flex-end'
   },
@@ -59,15 +60,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
 
-  debitText: {
+  moneyTxt: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: green
-  },
-
-  creditText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: red
   },
 });

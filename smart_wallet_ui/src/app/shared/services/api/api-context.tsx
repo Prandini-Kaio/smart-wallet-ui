@@ -2,6 +2,8 @@ import { createContext, useContext } from 'react';
 import RequestBase, { verboseAPI } from './api';
 import { showMessage } from 'react-native-flash-message';
 import { LancamentoFilter, LancamentoResponse } from '../../../features/lancamentos/services/entity/lancamento.entity';
+import { TransacaoResponse } from '../../../features/lancamentos/services/entity/transacao.entity';
+import { TransacaoFilter } from '../../../features/visualizar-lancamentos/services/entity/transacao-entity';
 
 export enum TipoLancamento {
   ENTRADA = 'ENTRADA',
@@ -51,6 +53,7 @@ export interface TotalizadorFinanceiro {
 interface APIContextData {
   ping(): Promise<boolean>;
   getLancamentos(): Promise<LancamentoResponse[]>;
+  getTransacoes(fitler: TransacaoFilter): Promise<TransacaoResponse[]>;
   getTransacoesByLancamento(idLancamento: number): Promise<Transacao[]>;
   getTotalizadorFilter(filter: LancamentoFilter): Promise<TotalizadorFinanceiro>;
   getTotalizadorPeriodo(
@@ -101,6 +104,39 @@ function APIProvider({ children }: any) {
     });
   };
 
+  const getTransacoes = (
+    filter: TransacaoFilter
+  )
+  : Promise<TransacaoResponse[]> => 
+  {
+
+    const params = new URLSearchParams({
+      id: filter.id != null ? filter.id.toString() : '',
+      categoria: filter.categoria,
+      tipo: filter.tipo,
+      pagamento: filter.pagamento,
+      status: filter.status != undefined ? filter.status.toString() : '',
+      conta: filter.conta,
+      dtInicio: filter.dtInicio,
+      dtFim: filter.dtFim
+    });
+    
+    return new Promise<TransacaoResponse[]>((resolve, reject) => {
+      RequestBase<TransacaoResponse[]>(verboseAPI.GET, 'transacao', params)
+        .then(result => {
+        console.log(filter);
+          resolve(result);
+        })
+        .catch(error => {
+          showMessage({
+            message: error.message || 'Falha ao carregar transacoes.',
+            type: 'danger',
+          });
+          reject(error);
+        });
+    });
+  };
+  
   const getTransacoesByLancamento = (
     idLancamento: number,
   ): Promise<Transacao[]> => {
@@ -245,6 +281,7 @@ function APIProvider({ children }: any) {
       value={{
         ping,
         getLancamentos,
+        getTransacoes,
         getTransacoesByLancamento,
         getTotalizadorFilter,
         getTotalizadorPeriodo,
