@@ -14,6 +14,7 @@ import LancamentoCard from '../lancamento';
 import { LancamentoResponse } from '../../services/entity/lancamento.entity';
 import { useLancamentoService } from '../../services/lancamentos.service';
 import { gray, lightGreen } from '../../../../shared/utils/style-constants';
+import { handleApiError } from '../../../../shared/utils/errorHandler';
 
 function mockLancamentos() {
   const lancamentos: LancamentoResponse[] = [];
@@ -68,11 +69,7 @@ export default function LancamentosRecentes({ navigation }: any) {
         setLancamentos(JSON.parse(result));
       })
       .catch(e => {
-        showMessage({
-          message: 'Erro ao carregar os lançamentos',
-          type: 'danger',
-        });
-        console.log(e);
+        handleApiError(e);
       });
   }, [focus]);
 

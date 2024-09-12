@@ -39,7 +39,7 @@ export const style = StyleSheet.create({
     },
 
     txtMain: {
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: 'bold',
         color: black,
     },

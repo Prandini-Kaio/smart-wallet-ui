@@ -6,6 +6,7 @@ import Home from '../../../core/home/home';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddLancamento from '../../../features/lancamentos/components/add-lancamento/add-lancamento';
 import { VisualizarLancamentos } from '../../../features/visualizar-lancamentos/visualiza-lancamentos.module';
+import Settings from '../../../core/settings/settings';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +55,20 @@ function TabScreens() {
               color={color}
               focused={focused}
               icon={'cash'}></ButtonTabBar>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <ButtonTabBar
+              defaultColor={white}
+              color={color}
+              focused={focused}
+              icon={'account-settings'}></ButtonTabBar>
           ),
         }}
       />

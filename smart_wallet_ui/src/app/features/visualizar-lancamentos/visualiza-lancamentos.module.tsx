@@ -8,6 +8,7 @@ import { LancamentoResponse } from "../lancamentos/services/entity/lancamento.en
 import { TransacaoResponse } from "../lancamentos/services/entity/transacao.entity"
 import { StatusLancamento, TipoLancamento, TipoPagamento, useAPI } from "../../shared/services/api/api-context"
 import { StatusTransacaoEnum, TransacaoFilter } from "./services/entity/transacao-entity"
+import { formatDateTime } from "../lancamentos/services/usecases/date-utils.service"
 
 export const VisualizarLancamentos = () => {
 
@@ -17,11 +18,11 @@ export const VisualizarLancamentos = () => {
 
 
     const [filter, setFilter] = useState<TransacaoFilter>({
-        id: null,
+        id: 0,
         categoria: '',
-        tipo: TipoLancamento.SAIDA,
-        pagamento: TipoPagamento.CREDITO,
-        status: StatusTransacaoEnum.PENDENTE,
+        tipo: '',
+        pagamento: '',
+        status: '',
         conta: '',
         dtInicio: '',
         dtFim: ''
@@ -30,10 +31,10 @@ export const VisualizarLancamentos = () => {
     useEffect(() => {
         getTransacoes(filter)
         .then(result => {
-            console.log('AAA');
             setTransacoes(result);
         })
         .catch(error => {
+            console.log("BVB");
             console.error(error);
         })
     }, [filter]);

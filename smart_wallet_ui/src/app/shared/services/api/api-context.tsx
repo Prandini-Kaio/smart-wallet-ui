@@ -1,9 +1,10 @@
 import { createContext, useContext } from 'react';
-import RequestBase, { verboseAPI } from './api';
 import { showMessage } from 'react-native-flash-message';
 import { LancamentoFilter, LancamentoResponse } from '../../../features/lancamentos/services/entity/lancamento.entity';
 import { TransacaoResponse } from '../../../features/lancamentos/services/entity/transacao.entity';
 import { TransacaoFilter } from '../../../features/visualizar-lancamentos/services/entity/transacao-entity';
+import { VerboseAPI, useApiUtils } from './api';
+import { handleApiError } from '../../utils/errorHandler';
 
 export enum TipoLancamento {
   ENTRADA = 'ENTRADA',
@@ -40,6 +41,7 @@ export interface Conta {
   banco: string;
   nome: string;
   dtVencimento: string;
+  diaVencimento: string;
   saldoParcial: number;
   tipoConta: TipoConta;
 }
@@ -60,21 +62,25 @@ interface APIContextData {
     conta: string,
     dtInicio: string,
     dtFim: string,
-    ): Promise<TotalizadorFinanceiro>;
-    getContas(): Promise<Conta[]>;
-    getCategorias(): Promise<string[]>;
-    
-    createLancamento(input: LancamentoResponse): Promise<LancamentoResponse>;
+  ): Promise<TotalizadorFinanceiro>;
+  getContas(): Promise<Conta[]>;
+  getCategorias(): Promise<string[]>;
+
+  createLancamento(input: LancamentoResponse): Promise<LancamentoResponse>;
   createConta(input: Conta): Promise<Conta>;
+  payTransaction(id: string): Promise<TransacaoResponse>;
+  payAllTransactions(filter: TransacaoFilter): Promise<TransacaoResponse[]>;
 }
 
 const APIContext = createContext<APIContextData>({} as APIContextData);
 
 function APIProvider({ children }: any) {
 
+  const { RequestBase } = useApiUtils();
+
   const ping = (): Promise<boolean> => {
     return new Promise((resolve, reject) => {
-      RequestBase<string>(verboseAPI.GET, 'health/ping')
+      RequestBase(VerboseAPI.GET, 'health/ping')
         .then(result => {
           resolve(true);
         })
@@ -90,15 +96,12 @@ function APIProvider({ children }: any) {
 
   const getLancamentos = (): Promise<LancamentoResponse[]> => {
     return new Promise<LancamentoResponse[]>((resolve, reject) => {
-      RequestBase<LancamentoResponse[]>(verboseAPI.GET, 'lancamento/all')
+      RequestBase<LancamentoResponse[]>(VerboseAPI.GET, 'lancamento/all')
         .then(result => {
-          resolve(result);
+          resolve(result.data);
         })
         .catch(error => {
-          showMessage({
-            message: error.message || 'Falha ao carregar lançamentos.',
-            type: 'danger',
-          });
+          handleApiError(error);
           reject(error);
         });
     });
@@ -106,12 +109,11 @@ function APIProvider({ children }: any) {
 
   const getTransacoes = (
     filter: TransacaoFilter
-  )
-  : Promise<TransacaoResponse[]> => 
-  {
+  ): Promise<TransacaoResponse[]> => {
 
-    const params = new URLSearchParams({
+    const params = {
       id: filter.id != null ? filter.id.toString() : '',
+      idLancamento: filter.idLancamento != null ? filter.idLancamento.toString() : '',
       categoria: filter.categoria,
       tipo: filter.tipo,
       pagamento: filter.pagamento,
@@ -119,30 +121,26 @@ function APIProvider({ children }: any) {
       conta: filter.conta,
       dtInicio: filter.dtInicio,
       dtFim: filter.dtFim
-    });
-    
+    };
+
     return new Promise<TransacaoResponse[]>((resolve, reject) => {
-      RequestBase<TransacaoResponse[]>(verboseAPI.GET, 'transacao', params)
+      RequestBase<TransacaoResponse[]>(VerboseAPI.GET, 'transacao', params)
         .then(result => {
-        console.log(filter);
-          resolve(result);
+          resolve(result.data);
         })
         .catch(error => {
-          showMessage({
-            message: error.message || 'Falha ao carregar transacoes.',
-            type: 'danger',
-          });
+          handleApiError(error);
           reject(error);
         });
     });
   };
-  
+
   const getTransacoesByLancamento = (
     idLancamento: number,
   ): Promise<Transacao[]> => {
     return new Promise<Transacao[]>((resolve, reject) => {
       RequestBase<Transacao[]>(
-        verboseAPI.GET,
+        VerboseAPI.GET,
         'transacao',
         `idLancamento=${idLancamento}`,
       )
@@ -150,10 +148,7 @@ function APIProvider({ children }: any) {
           resolve(result);
         })
         .catch(error => {
-          showMessage({
-            message: error.message || 'Falha ao carregar transações.',
-            type: 'danger',
-          });
+          handleApiError(error);
           reject(error);
         });
     });
@@ -163,7 +158,7 @@ function APIProvider({ children }: any) {
     filter: LancamentoFilter
   ): Promise<TotalizadorFinanceiro> => {
 
-    const params = new URLSearchParams({
+    const params = {
       tipo: filter.tipo,
       categoria: filter.categoria,
       tipoPagamento: filter.tipoPagamento,
@@ -171,16 +166,17 @@ function APIProvider({ children }: any) {
       dtInicio: filter.dtInicio,
       dtFim: filter.dtFim,
       conta: filter.conta
-    });
+    };
 
     return new Promise<TotalizadorFinanceiro>((resolve, reject) => {
-      RequestBase<TotalizadorFinanceiro>(verboseAPI.GET, 'transacao/totalizador', params)
-      .then(result => {
-        resolve(result);
-      })
-      .catch(error => {
-        reject(error);
-      });
+      RequestBase<TotalizadorFinanceiro>(VerboseAPI.GET, 'transacao/totalizador', params)
+        .then(result => {
+          resolve(result.data);
+        })
+        .catch(error => {
+          handleApiError(error);
+          reject(error);
+        });
 
     });
   }
@@ -197,14 +193,15 @@ function APIProvider({ children }: any) {
     });
     return new Promise<TotalizadorFinanceiro>((resolve, reject) => {
       RequestBase<TotalizadorFinanceiro>(
-        verboseAPI.GET,
+        VerboseAPI.GET,
         'transacao/totalizador/periodo',
         params,
       )
         .then(result => {
-          resolve(result);
+          resolve(result.data);
         })
         .catch(error => {
+          handleApiError(error);
           reject(error);
         });
     });
@@ -212,11 +209,12 @@ function APIProvider({ children }: any) {
 
   const getContas = (): Promise<Conta[]> => {
     return new Promise<Conta[]>((resolve, reject) => {
-      RequestBase<Conta[]>(verboseAPI.GET, 'conta/all')
+      RequestBase<Conta[]>(VerboseAPI.GET, 'conta/all')
         .then(result => {
-          resolve(result);
+          resolve(result.data);
         })
         .catch(error => {
+          handleApiError(error);
           reject(error);
         });
     });
@@ -224,11 +222,12 @@ function APIProvider({ children }: any) {
 
   const getCategorias = (): Promise<string[]> => {
     return new Promise<string[]>((resolve, reject) => {
-      RequestBase<string[]>(verboseAPI.GET, 'lancamento/categoria')
+      RequestBase<string[]>(VerboseAPI.GET, 'lancamento/categoria')
         .then(result => {
-          resolve(result);
+          resolve(result.data);
         })
         .catch(error => {
+          handleApiError(error);
           reject(error);
         });
     });
@@ -236,42 +235,85 @@ function APIProvider({ children }: any) {
 
   const createLancamento = (input: LancamentoResponse): Promise<LancamentoResponse> => {
     return new Promise<LancamentoResponse>((resolve, reject) => {
-      RequestBase<LancamentoResponse>(verboseAPI.POST, 'lancamento', input)
+      RequestBase<LancamentoResponse>(VerboseAPI.POST, 'lancamento', input)
         .then(result => {
           showMessage({
             message: 'Lançamento criado com sucesso',
             type: 'success',
           });
-          resolve(result);
+          resolve(result.data);
         })
-        .catch(e => {
-          showMessage({
-            message: e.message || 'Erro ao criar lançamento',
-            type: 'danger',
-          });
-          reject(e);
+        .catch(error => {
+          handleApiError(error);
+          reject(error);
         });
     });
   };
 
   const createConta = (input: Conta): Promise<Conta> => {
     return new Promise<Conta>((resolve, reject) => {
-      RequestBase<Conta>(verboseAPI.POST, 'conta', input)
+      RequestBase<Conta>(VerboseAPI.POST, 'conta', input)
         .then(result => {
           showMessage({
             message: 'Conta criada com sucesso',
             type: 'success',
           });
-          resolve(result);
+          resolve(result.data);
         })
-        .catch(e => {
+        .catch(error => {
+          handleApiError(error);
+          reject(error);
+        });
+    });
+  };
+
+  const payTransaction = (id: string): Promise<TransacaoResponse> => {
+    return new Promise<TransacaoResponse>((resolve, reject) => {
+
+      const params = {
+        id: id
+      }
+      RequestBase<TransacaoResponse>(VerboseAPI.PUT, 'transacao/pagar', params)
+        .then(result => {
           showMessage({
-            message:
-              'Erro ao criar conta [' + e.message + ']' ||
-              'Erro ao criar conta',
-            type: 'danger',
+            message: `Transacao ${id} paga com sucesso`,
+            type: 'success',
           });
-          reject(e);
+          resolve(result.data);
+        })
+        .catch(error => {
+          handleApiError(error);
+          reject(error);
+        });
+    });
+  };
+
+  const payAllTransactions = (filter: TransacaoFilter): Promise<TransacaoResponse[]> => {
+    return new Promise<TransacaoResponse[]>((resolve, reject) => {
+
+      const params = {
+        id: filter.id != null ? filter.id.toString() : '',
+        idLancamento: filter.idLancamento != null ? filter.idLancamento.toString() : '',
+        categoria: filter.categoria,
+        tipo: filter.tipo,
+        pagamento: filter.pagamento,
+        status: filter.status != undefined ? filter.status.toString() : '',
+        conta: filter.conta,
+        dtInicio: filter.dtInicio,
+        dtFim: filter.dtFim
+      };
+
+      RequestBase<TransacaoResponse[]>(VerboseAPI.PUT, 'transacao/pagar', params)
+        .then(result => {
+          showMessage({
+            message: `Transacoes ${filter.conta} pagas com sucesso`,
+            type: 'success',
+          });
+          resolve(result.data);
+        })
+        .catch(error => {
+          handleApiError(error);
+          reject(error);
         });
     });
   };
@@ -289,6 +331,8 @@ function APIProvider({ children }: any) {
         getCategorias,
         createLancamento,
         createConta,
+        payTransaction,
+        payAllTransactions
       }}>
       {children}
     </APIContext.Provider>

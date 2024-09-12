@@ -24,6 +24,7 @@ function mockContas(){
         banco: 'CAIXA',
         nome: 'CORRENTE',
         dtVencimento : '01/05',
+        diaVencimento: '1',
         saldoParcial: 120,
         tipoConta: TipoConta.CORRENTE_POUPANCA
       };
@@ -47,7 +48,6 @@ export default function ContasCarousell({navigation}: any) {
         
     getContas()
     .then((result) => {
-        console.log("ttt " + result)
         setContas(result);
     })
     .catch((e) => {
@@ -59,7 +59,7 @@ export default function ContasCarousell({navigation}: any) {
     })
 }, [focus])
 
-function CardContas({nome, banco, dtVencimento, tipoConta}: Conta) {
+function CardContas({nome, banco, dtVencimento, tipoConta, saldoParcial}: Conta) {
   return (
     <SafeAreaView style={style2.container}>
       <View style={[style2.card, {backgroundColor: lightGreen}]}>
@@ -78,7 +78,7 @@ function CardContas({nome, banco, dtVencimento, tipoConta}: Conta) {
 
           <View style={{flexDirection: 'column'}}>
             <Text style={style2.txtBold}>R$</Text>
-            <Text style={style2.txtSmall}>{nome}</Text>
+            <Text style={style2.txtBold}>{saldoParcial}</Text>
           </View>
 
           <View style={{flexDirection: 'column'}}>
@@ -100,6 +100,7 @@ function CardContas({nome, banco, dtVencimento, tipoConta}: Conta) {
           banco={item.banco}
           nome={item.nome}
           dtVencimento={item.dtVencimento}
+          diaVencimento={item.diaVencimento}
           tipoConta={item.tipoConta}        />
       </TouchableOpacity>
     );

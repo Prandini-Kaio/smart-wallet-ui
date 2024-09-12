@@ -1,3 +1,4 @@
+import { StatusTransacaoEnum } from "../../../visualizar-lancamentos/services/entity/transacao-entity";
 import { LancamentoResponse } from "./lancamento.entity";
 
 export interface TransacaoResponse {
@@ -5,11 +6,12 @@ export interface TransacaoResponse {
     valor: number,
     dtVencimento: string,
     dtPagamento: string,
-    status: string,
+    status: StatusTransacaoEnum,
     descricao: string,
     lancamento: LancamentoResponse;
 }
 
 export interface TransacaoProps {
-    transacao: TransacaoResponse
+    transacao: TransacaoResponse,
+    onPress: any
 }

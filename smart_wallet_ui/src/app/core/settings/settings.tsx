@@ -1,22 +1,21 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Contas from '../../features/contas/components/contas';
+import SettingsModule from '../../features/settings/settings-modulo';
 
 const Stack = createNativeStackNavigator();
 
-export default function ContaScreen({navigation}: any) {
+export default function Settings({navigation}: any) {
   return (
     <Stack.Navigator
-      initialRouteName={'Contas'}
+      initialRouteName={'Settings'}
       screenOptions={{
         headerShown: false,
       }}>
       <Stack.Group>
 
         <Stack.Screen
-          name="Contas"
-          component={Contas}
+          name="Settings"
+          component={SettingsModule}
         />
-
       </Stack.Group>
     </Stack.Navigator>
   );

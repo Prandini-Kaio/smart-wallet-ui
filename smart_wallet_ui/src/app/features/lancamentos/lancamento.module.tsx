@@ -8,6 +8,7 @@ import { TotalizadorFinanceiro, useAPI } from '../../shared/services/api/api-con
 import { showMessage } from 'react-native-flash-message';
 import { useIsFocused } from '@react-navigation/native';
 import { formatDate } from './services/usecases/date-utils.service';
+import { handleApiError } from '../../shared/utils/errorHandler';
 
 export default function Lancamento({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,13 +35,8 @@ export default function Lancamento({ navigation }: any) {
     getTotalizadorPeriodo('', formatDate(dayOne), formatDate(dayLast))
     .then((result) => {
       setTotalizador(result);
-    })
-    .catch((error) => {
-      showMessage({
-        message: "Erro ao consultar totalizador.",
-        type: "danger"
-      })
-      console.info("Erro ao consultar totalizador.");
+    }).catch(error => {
+      handleApiError(error);
     });
   }, [focus])
 

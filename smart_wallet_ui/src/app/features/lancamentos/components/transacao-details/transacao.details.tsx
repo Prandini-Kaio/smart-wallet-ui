@@ -1,22 +1,23 @@
-import { FlatList, Text, View } from 'react-native';
-import { style } from './styles.transacao';
-import { TransacaoResponse } from '../../services/entity/transacao.entity';
+import { Text, View } from 'react-native';
+import { green } from '../../../../shared/utils/style-constants';
 import { LancamentoResponse } from '../../services/entity/lancamento.entity';
-import { gray, green } from '../../../../shared/utils/style-constants';
+import { TransacaoResponse } from '../../services/entity/transacao.entity';
+import { style } from './styles.transacao';
 
 
 interface Props {
-  lancamento: LancamentoResponse,
+  lancamento: LancamentoResponse | undefined,
   transacoes: TransacaoResponse[]
 }
 
 export default function TransacaoDetails(prop: Props) {
+
   return (
     <>
       <View style={style.container}>
 
         <View style={{ alignItems: 'center' }}>
-          <Text style={{ color: green, fontSize: 22, fontWeight: 'bold' }}>R$ {prop.lancamento.valor}</Text>
+          <Text style={{ color: green, fontSize: 22, fontWeight: 'bold' }}>R$ {prop.lancamento?.valor}</Text>
         </View>
 
         <View style={style.inside}>
@@ -25,13 +26,13 @@ export default function TransacaoDetails(prop: Props) {
             <View style={{ flexDirection: 'row' }}>
               <Text style={style.txtLabel}>Categoria: </Text>
 
-              <Text style={style.txtSecond}>{prop.lancamento.categoriaLancamento}</Text>
+              <Text style={style.txtSecond}>{prop.lancamento?.categoriaLancamento}</Text>
             </View>
 
             <View style={{ flexDirection: 'row' }}>
               <Text style={style.txtLabel}>Pagamento: </Text>
 
-              <Text style={style.txtSecond}>{prop.lancamento.tipoPagamento}</Text>
+              <Text style={style.txtSecond}>{prop.lancamento?.tipoPagamento}</Text>
             </View>
 
           </View>
@@ -40,13 +41,13 @@ export default function TransacaoDetails(prop: Props) {
             <View style={{ flexDirection: 'row' }}>
               <Text style={style.txtLabel}>Lancamento: </Text>
 
-              <Text style={style.txtSecond}>{prop.lancamento.tipoLancamento}</Text>
+              <Text style={style.txtSecond}>{prop.lancamento?.tipoLancamento}</Text>
             </View>
 
             <View style={{ flexDirection: 'row' }}>
               <Text style={style.txtLabel}>Conta: </Text>
 
-              <Text style={style.txtSecond}>{prop.lancamento.conta}</Text>
+              <Text style={style.txtSecond}>{prop.lancamento?.conta}</Text>
             </View>
 
           </View>
@@ -54,12 +55,12 @@ export default function TransacaoDetails(prop: Props) {
         </View >
 
         <View style={{padding: 10}}>
-          <Text style={style.txtSecond}>{prop.lancamento.descricao}</Text>
+          <Text style={style.txtSecond}>{prop.lancamento?.descricao}</Text>
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text style={style.txtThrid}>{prop.lancamento.parcelas}</Text>
-          <Text style={style.txtThrid}>{prop.lancamento.status}</Text>
+          <Text style={style.txtThrid}>{prop.lancamento?.parcelas}</Text>
+          <Text style={style.txtThrid}>{prop.lancamento?.status}</Text>
         </View>
 
       </View >

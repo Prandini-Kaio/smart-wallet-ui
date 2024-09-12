@@ -1,41 +1,43 @@
-import React from 'react';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { showMessage } from 'react-native-flash-message';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
-import { useEffect, useState } from 'react';
-import { Transacao, useAPI } from '../../../../shared/services/api/api-context';
-import { black, gray } from '../../../../shared/utils/style-constants';
-import { style, style2 } from './style.transacao';
-import { TransacaoResponse } from '../../services/entity/transacao.entity';
-import { TransacaoProps } from '../../services/entity/transacao.entity';
+import { showMessage } from 'react-native-flash-message';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useAPI } from '../../../../shared/services/api/api-context';
+import { black, green, yellow } from '../../../../shared/utils/style-constants';
+import { StatusTransacaoEnum, TransacaoFilter } from '../../../visualizar-lancamentos/services/entity/transacao-entity';
+import { LancamentoResponse } from '../../services/entity/lancamento.entity';
+import { TransacaoProps, TransacaoResponse } from '../../services/entity/transacao.entity';
+import ConfirmTransactionComponent from '../confirm-pay-modal/confirm-pay-modal';
 import TransacaoDetails from '../transacao-details/transacao.details';
-import { LancamentoResponse } from '../../services/entity/lancamento.entity.tsx';
+import { style, style2 } from './style.transacao';
 
-const Icone = ({ nome }: { nome: string }) => {
-  return (
-    <View style={style.iconeCircle}>
-      <Icon name={nome} color={black} size={60} />
-    </View>
-  );
-};
+const Icone = ({ nome }: { nome: string }) => (
+  <View style={style.iconeCircle}>
+    <Icon name={nome} color={black} size={60} />
+  </View>
+);
 
-const TransacaoItem = ({ transacao }: { transacao: TransacaoProps['transacao'] }) => {
-  
-  const [dia, mes, ano] = transacao.dtVencimento.split("/").map(Number);
-  const dt = new Date(ano, mes -1, dia);
+const TransacaoItem = ({ transacao, onPress }: TransacaoProps) => {
+  const [dia, mes, ano] = transacao.dtVencimento.split('/').map(Number);
+  const dt = new Date(ano, mes - 1, dia);
 
   const formatData = (data: Date) => {
-    const dia = String(data.getDay()).padStart(2, '0');
+    const dia = String(data.getDate()).padStart(2, '0');
     const mes = String(data.getMonth() + 1).padStart(2, '0');
+    return `${dia}/${mes}`;
+  };
 
-    return `${dia}/${mes}`
-  }
-  
   return (
-    <TouchableOpacity style={style2.container}>
+    <TouchableOpacity style={style2.container} onPress={onPress}>
       <Text style={style2.txtDefault}>{transacao.descricao}</Text>
       <Text style={style2.txtDefault}>R$ {transacao.valor}</Text>
-      <Text style={style2.txtYellow}>{transacao.status}</Text>
+      <Text style={
+        {
+          ...style2.txtYellow,
+          color: transacao.status === StatusTransacaoEnum.PENDENTE ? yellow : green 
+        }
+      }
+      >{transacao.status}</Text>
       <Text style={style2.txtSecond}>{formatData(dt)}</Text>
     </TouchableOpacity>
   );
@@ -48,27 +50,74 @@ interface Props {
 }
 
 export default function CardTransacao({ lancamento, visible, hide }: Props) {
-  const { getTransacoesByLancamento } = useAPI();
+  const { getTransacoes, payTransaction } = useAPI();
   const [transacoes, setTransacoes] = useState<TransacaoResponse[]>([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentTransactionId, setCurrentTransactionId] = useState('');
+  const [descricao, setDescricao] = useState('SEM DESCRIÇÃO DISPONÍVEL');
+
+  // Função para resetar o estado do modal
+  const resetModal = useCallback(() => {
+    setIsModalVisible(false);
+    setCurrentTransactionId('');
+    setDescricao('SEM DESCRIÇÃO DISPONÍVEL');
+    hide(); // Esconde o modal principal
+  }, [hide]);
+
+  const handlePressPayNow = useCallback((transacao: TransacaoResponse) => {
+    setIsModalVisible(true);
+    setCurrentTransactionId(transacao.id.toString());
+    setDescricao(transacao.descricao);
+  }, []);
+
+  const handleConfirm = useCallback(() => {
+    if (currentTransactionId) {
+      payTransaction(currentTransactionId)
+        .then(result => {
+          console.log(result);
+          resetModal(); // Reseta o modal e o oculta após o pagamento
+        })
+        .catch(() => {
+          showMessage({
+            message: `Erro ao processar pagamento`,
+            type: 'danger',
+          });
+        });
+    }
+  }, [currentTransactionId, payTransaction, resetModal]);
+
+  const handleCancel = useCallback(() => {
+    setIsModalVisible(false);
+  }, []);
 
   useEffect(() => {
     if (lancamento) {
-      getTransacoesByLancamento(lancamento.id)
-        .then(result => {
-          setTransacoes(result);
-        })
-        .catch(e => {
+      const filter: TransacaoFilter = {
+        id: null,
+        idLancamento: lancamento.id,
+        categoria: '',
+        tipo: '',
+        pagamento: '',
+        status: '',
+        conta: '',
+        dtInicio: '',
+        dtFim: '',
+      };
+
+      getTransacoes(filter)
+        .then(result => setTransacoes(result))
+        .catch(() => {
           showMessage({
             message: `Erro ao carregar transações do lançamento ${lancamento.id}`,
             type: 'danger',
           });
         });
     }
-  }, [lancamento, getTransacoesByLancamento]);
+  }, [lancamento, getTransacoes, resetModal]);
 
   return (
     <Modal
-      transparent={true}
+      transparent
       animationType="fade"
       visible={visible}
       onRequestClose={hide}>
@@ -80,14 +129,20 @@ export default function CardTransacao({ lancamento, visible, hide }: Props) {
 
             <TransacaoDetails transacoes={transacoes} lancamento={lancamento} />
 
-            <View style={{ }}>
-              <FlatList
-                data={transacoes}
-                keyExtractor={item => item.id.toString()}
-                renderItem={({ item }) => <TransacaoItem transacao={item} />}
-              />
-            </View>
+            <FlatList
+              data={transacoes}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({ item }) => (
+                <TransacaoItem transacao={item} onPress={() => handlePressPayNow(item)} />
+              )}
+            />
 
+            <ConfirmTransactionComponent
+              onConfirm={handleConfirm}
+              onCancel={handleCancel}
+              isModalVisible={isModalVisible}
+              descricao={descricao}
+            />
           </View>
         </View>
       </View>

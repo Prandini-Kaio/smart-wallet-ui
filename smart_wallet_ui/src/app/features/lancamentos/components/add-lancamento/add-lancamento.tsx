@@ -97,7 +97,7 @@ export default function AddLancamento({ navigation }: any) {
                     value: conta.banco
                 };
             });
-            setContaItemsPicker(contaItems);
+            setContaItemsPicker([...contaItems, {label: '...', value: ''}]);
         })
     }, [focus])
 

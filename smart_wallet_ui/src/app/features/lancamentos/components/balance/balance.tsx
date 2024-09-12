@@ -1,9 +1,10 @@
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import style from './style.balance';
-import {SafeAreaView, Text, TouchableOpacity, View} from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { useState } from 'react';
+import { gold, lightGreen, red } from '../../../../shared/utils/style-constants';
 
-export default function BalanceCircle({navigation, total}: any) {
+export default function BalanceCircle({ navigation, total }: any) {
 
   const [hide, setHide] = useState(false);
 
@@ -12,7 +13,11 @@ export default function BalanceCircle({navigation, total}: any) {
 
       <View>
 
-        <TouchableOpacity style={style.circle} onPress={() => {
+        <TouchableOpacity style={{
+          ...style.circle,
+          shadowColor: parseFloat(total) < 0 ? red : lightGreen
+        }}
+          onPress={() => {
             setHide(!hide)
           }}
         >

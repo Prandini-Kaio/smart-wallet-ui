@@ -9,6 +9,7 @@ export enum StatusTransacaoEnum{
 
 export type TransacaoFilter = {
     id: number | null,
+    idLancamento: number| null,
     categoria: string,
     tipo: TipoLancamento | '',
     pagamento: TipoPagamento | string,

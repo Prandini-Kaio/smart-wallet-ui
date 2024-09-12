@@ -1,53 +1,86 @@
-import axios, { AxiosResponse } from "axios";
-import { showMessage } from "react-native-flash-message";
-import { IP_URL } from '../../../../environments/environments';
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import { useCallback } from "react";
+import { showMessage, MessageOptions } from "react-native-flash-message";
+import { useEnvironment } from "../../../../environments/environments";
+import { handleApiError } from "../../utils/errorHandler";
 
-export enum verboseAPI {
+export enum VerboseAPI {
   GET = 1,
   POST = 2,
   PUT = 3,
   DELETE = 4
 }
 
-export const api = axios.create({
-  baseURL: IP_URL,
-});
+interface ApiResponse<T = any> {
+  data: T;
+  status: number;
+  statusText: string;
+}
 
-export default function RequestBase<T>(method: verboseAPI, url: string, params?: any): Promise<T>{
-  return new Promise<T>(async (resolve, reject) => {
+type ApiErrorResponse = {
+  message: string;
+  code?: string;
+};
+
+interface RequestBaseOptions {
+  headers?: Record<string, string>;
+  timeout?: number;
+}
+
+export const useApiUtils = () => {
+  const { apiUrl } = useEnvironment();
+
+  const api: AxiosInstance = axios.create({
+    baseURL: apiUrl,
+    timeout: 10000,
+  });
+
+  async function RequestBase<ApiResponse>(
+    method: VerboseAPI,
+    url: string,
+    params?: any,
+    options?: RequestBaseOptions
+  ): Promise<any> {
     try {
       const headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...options?.headers,
       };
 
-      let response: AxiosResponse<T>;
+      let response: AxiosResponse;
+
+      if (params) {
+        url = `${url}?${new URLSearchParams(params).toString()}`;
+      }
+
       switch (method) {
-        case verboseAPI.GET:
-          if (params) {
-            url = `${url}?${params}`;
-          }
-          response = await api.get(url, {headers});
+        case VerboseAPI.GET:
+          response = await api.get(url, { headers, timeout: options?.timeout });
           break;
-        case verboseAPI.POST:
-          response = await api.post(url, params, {headers});
+        case VerboseAPI.POST:
+          response = await api.post(url, params, { headers, timeout: options?.timeout });
           break;
-        case verboseAPI.PUT:
-          response = await api.put(url, params, {headers});
+        case VerboseAPI.PUT:
+          console.log(url);
+          response = await api.put(url, params, { headers, timeout: options?.timeout });
           break;
-        case verboseAPI.DELETE:
-          response = await api.delete(url, {headers});
+        case VerboseAPI.DELETE:
+          response = await api.delete(url, { headers, timeout: options?.timeout });
           break;
         default:
           throw new Error(`Invalid method ${method}`);
       }
 
-      resolve(response.data);
-    } catch (error: any) {
-      showMessage({
-        message: `Verifique sua conexão com a internet [${error.message}]`,
-        type: 'danger',
-      });
-      reject(error);
+      return {
+        data: response.data,
+        status: response.status,
+        statusText: response.statusText,
+      };
+    } catch (error) {
+      handleApiError(error);
+      throw error;
     }
-  });
-}
+  };
+
+  return { RequestBase };
+};

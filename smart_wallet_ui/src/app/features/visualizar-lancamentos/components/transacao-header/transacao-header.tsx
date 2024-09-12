@@ -19,27 +19,29 @@ export const TransacaoHeader = ({handleChange}: any) => {
 
     const focus = useIsFocused();
 
+    const today = new Date();
+
     const { consultarCategorias } = useLancamentoService();
     const { consultarContas } = useContaService();
 
     const [totalizador, setTotalizador] = useState<TotalizadorFinanceiro>();
 
     const [dtInicioOpen, setDtInicioOpen] = useState(false);
-    const [dtInicio, setDtInicio] = useState(new Date());
+    const [dtInicio, setDtInicio] = useState(new Date(today.getFullYear(), today.getMonth()-1, 1));
 
     const [dtFimOpen, setDtFimOpen] = useState(false);
-    const [dtFim, setDtFim] = useState(new Date());
+    const [dtFim, setDtFim] = useState(new Date(today.getFullYear(), today.getMonth() +1, 0));
 
-    const [tipo, setTipo] = useState('');
+    const [tipo, setTipo] = useState('...');
     const [tipoItemsPicker, setTipoItemsPicker] = useState<PickerItem[]>([{ label: 'Entrada', value: 'ENTRADA' }, { label: 'Saida', value: 'SAIDA' }]);
 
-    const [categoria, setCategoria] = useState('');
+    const [categoria, setCategoria] = useState('...');
     const [categoriaItemsPicker, setCategoriaItemsPicker] = useState<PickerItem[]>([]);
 
-    const [tipoPagamento, setTipoPagamento] = useState('');
+    const [tipoPagamento, setTipoPagamento] = useState('...');
     const [tipoPagamentoItemsPicker, setTipoPagamentoItemsPicker] = useState<PickerItem[]>([{ label: 'Crédito', value: 'CREDITO' }, { label: 'Débito', value: 'DEBITO' }]);
 
-    const [status, setStatus] = useState('')
+    const [status, setStatus] = useState('...')
     const [statusItemsPicker, setStatusItemsPicker] = useState<PickerItem[]>([
         { label: 'Atrasado', value: 'ATRASADO' },
         { label: 'Cancelado', value: 'CANCELADO' },
@@ -47,7 +49,7 @@ export const TransacaoHeader = ({handleChange}: any) => {
         { label: 'Pendente', value: 'PENDENTE' }
     ]);
 
-    const [conta, setConta] = useState('');
+    const [conta, setConta] = useState('...');
     const [contasItemsPicker, setContasItemsPicker] = useState<PickerItem[]>([]);
 
     const [filter, setFilter] = useState<TransacaoFilter>();
@@ -59,13 +61,15 @@ export const TransacaoHeader = ({handleChange}: any) => {
             categoria: categoria != '...' ? categoria : '',
             pagamento:  tipoPagamento != '...' ? tipoPagamento : '',
             status: status != '...' ? status : '',
-            dtInicio: formatDateTime(dtInicio),
-            dtFim: formatDateTime(dtFim),
+            dtInicio: formatDateTime(dtInicio, false),
+            dtFim: formatDateTime(dtFim, true),
             conta: conta != '...' ? conta : '',
         }
 
         setFilter(f);
         handleChange(f);
+
+        console.log(`INIT: ${f.dtInicio} - ${f.dtFim}`);
 
         getTotalizador(f)
             .then(result => {
