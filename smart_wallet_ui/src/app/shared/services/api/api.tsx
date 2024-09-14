@@ -61,7 +61,6 @@ export const useApiUtils = () => {
           response = await api.post(url, params, { headers, timeout: options?.timeout });
           break;
         case VerboseAPI.PUT:
-          console.log(url);
           response = await api.put(url, params, { headers, timeout: options?.timeout });
           break;
         case VerboseAPI.DELETE:
@@ -77,6 +76,7 @@ export const useApiUtils = () => {
         statusText: response.statusText,
       };
     } catch (error) {
+      console.log(error);
       handleApiError(error);
       throw error;
     }

@@ -1,7 +1,8 @@
 import { Animated, Button, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { black, gray, gray2, lightGreen, white } from "../../shared/utils/style-constants";
-import { useRef, useState } from "react";
+import { black, gray, gray2, green, lightGreen, red, white } from "../../shared/utils/style-constants";
+import { useEffect, useRef, useState } from "react";
 import { useEnvironment } from "../../../environments/environments";
+import { useAPI } from "../../shared/services/api/api-context";
 
 
 const { width } = Dimensions.get('window');
@@ -12,6 +13,21 @@ export default function SettingsModule() {
     const [tempApiUrl, setTempApiUrl] = useState(apiUrl);
     const [activeMenu, setActiveMenu] = useState('general');
     const slideAnim = useRef(new Animated.Value(0)).current;
+
+    const { ping } = useAPI();
+    const [statusApi, setStatusApi] = useState(false);
+
+    useEffect(() => {
+        ping()
+            .then((result) => {
+                if (result)
+                    setStatusApi(true);
+                else
+                    setStatusApi(false);
+            }).catch((error) => {
+                console.trace(error);
+            })
+    }, [apiUrl]);
 
     const switchContent = (menu: any) => {
         if (menu === activeMenu) return;
@@ -114,7 +130,10 @@ export default function SettingsModule() {
                 {renderContent()}
             </Animated.View>
 
-            <Text style={{position: 'absolute', bottom: 0, fontSize: 11, fontWeight: 'bold', color: black }}>{apiUrl}</Text>
+            <View style={{ width: '100%', position: 'absolute', bottom: 0, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{ fontSize: 11, fontWeight: 'bold', color: black }}>{apiUrl}</Text>
+                <Text style={{ fontSize: 12, fontWeight: 'bold', color: statusApi ? green : red }}>{statusApi ? 'OK' : 'Offline'}</Text>
+            </View>
         </View>
     );
 };

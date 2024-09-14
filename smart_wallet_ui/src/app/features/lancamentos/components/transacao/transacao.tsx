@@ -61,7 +61,7 @@ export default function CardTransacao({ lancamento, visible, hide }: Props) {
     setIsModalVisible(false);
     setCurrentTransactionId('');
     setDescricao('SEM DESCRIÇÃO DISPONÍVEL');
-    hide(); // Esconde o modal principal
+    hide();
   }, [hide]);
 
   const handlePressPayNow = useCallback((transacao: TransacaoResponse) => {
@@ -71,17 +71,11 @@ export default function CardTransacao({ lancamento, visible, hide }: Props) {
   }, []);
 
   const handleConfirm = useCallback(() => {
+    console.log(currentTransactionId)
     if (currentTransactionId) {
       payTransaction(currentTransactionId)
         .then(result => {
-          console.log(result);
-          resetModal(); // Reseta o modal e o oculta após o pagamento
-        })
-        .catch(() => {
-          showMessage({
-            message: `Erro ao processar pagamento`,
-            type: 'danger',
-          });
+          resetModal();
         });
     }
   }, [currentTransactionId, payTransaction, resetModal]);

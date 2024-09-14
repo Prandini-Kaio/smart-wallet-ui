@@ -13,7 +13,7 @@ interface Props {
 export const TransacaoItem = (props: Props) => {
 
     const colorStatus = () => {
-        switch (StatusTransacaoEnum[props.transacao.status as keyof typeof StatusTransacaoEnum]) {
+        switch (StatusTransacaoEnum[props.transacao.status as unknown as keyof typeof StatusTransacaoEnum]) {
             case StatusTransacaoEnum.ATRASADO:
                 return yellow;
             case StatusTransacaoEnum.CANCELADO:

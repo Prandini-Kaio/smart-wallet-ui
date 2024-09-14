@@ -19,6 +19,7 @@ export const VisualizarLancamentos = () => {
 
     const [filter, setFilter] = useState<TransacaoFilter>({
         id: 0,
+        idLancamento: 0,
         categoria: '',
         tipo: '',
         pagamento: '',
@@ -34,7 +35,6 @@ export const VisualizarLancamentos = () => {
             setTransacoes(result);
         })
         .catch(error => {
-            console.log("BVB");
             console.error(error);
         })
     }, [filter]);

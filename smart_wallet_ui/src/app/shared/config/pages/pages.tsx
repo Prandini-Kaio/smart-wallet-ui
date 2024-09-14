@@ -15,7 +15,6 @@ export default function Pages() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="TabScreens" component={TabScreens} options={{ headerShown: false }} />
-
       <Stack.Screen name="VisualizarLancamentos" component={VisualizarLancamentos} options={{ headerTitle: "Visualizar Lancamentos" }} />
       <Stack.Screen name="AddLancamento" component={AddLancamento} options={{ headerTitle: "Novo Lancamento" }} />
     </Stack.Navigator>
@@ -60,7 +59,7 @@ function TabScreens() {
       />
 
       <Tab.Screen
-        name="Settings"
+        name="AppSettings"
         component={Settings}
         options={{
           tabBarIcon: ({ color, focused }) => (

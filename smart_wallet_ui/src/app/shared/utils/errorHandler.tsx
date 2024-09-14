@@ -4,7 +4,7 @@ export const handleApiError = (error: any) => {
     let errorMessage = 'Erro desconhecido, contato o administrador.';
 
     if (error.response) {
-        errorMessage = error.response.data?.message || 'Erro na requisição.';
+        errorMessage = error.response.data?.message;
     } else if (error.request) {
         errorMessage = 'Sistema fora do ar, verifique sua conexão.';
     } else {
@@ -16,4 +16,6 @@ export const handleApiError = (error: any) => {
         type: 'danger',
         duration: 3000,
     });
+
+    console.clear();
 }
