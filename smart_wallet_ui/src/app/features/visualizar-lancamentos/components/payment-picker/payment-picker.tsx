@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { black, gold, gray, white } from '../../../../shared/utils/style-constants';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface PaymentPickerProps {
   onPayAll: () => void;
@@ -22,9 +24,10 @@ const PaymentPicker: React.FC<PaymentPickerProps> = ({ onPayAll, onPaySelected }
   };
 
   return (
-    <View>
+    <View style={{width: '30%'}}>
       <TouchableOpacity style={styles.button} onPress={toggleModal}>
-        <Text style={styles.buttonText}>Pay</Text>
+        <Text style={styles.buttonText}>Pagar</Text>
+        
       </TouchableOpacity>
 
       <Modal
@@ -53,14 +56,19 @@ const PaymentPicker: React.FC<PaymentPickerProps> = ({ onPayAll, onPaySelected }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#007AFF',
-    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 5,
+    padding: 5,
+    margin: 5,
     borderRadius: 5,
+    backgroundColor: gold
   },
   buttonText: {
-    color: 'white',
+    color: white,
+    fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 14,
   },
   modalOverlay: {
     flex: 1,
@@ -79,6 +87,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ECECEC',
   },
   optionText: {
+    color: gray,
     fontSize: 18,
     textAlign: 'center',
   },

@@ -11,7 +11,7 @@ export type TransacaoFilter = {
     id: number | null,
     idLancamento: number| null,
     categoria: string,
-    tipo: TipoLancamento | '',
+    tipo: TipoLancamento | string,
     pagamento: TipoPagamento | string,
     status: StatusTransacaoEnum | string,
     conta: string,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet, Dimensions, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { black, gray, gray2, lightGray, lightGreen, white } from '../../../../shared/utils/style-constants';
 
 export interface PickerOption {
   label: string;
@@ -29,12 +30,6 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
     };
 
     Dimensions.addEventListener('change', updateLayout);
-    return () => {
-      // For React Native versions < 0.65, use this:
-      // Dimensions.removeEventListener('change', updateLayout);
-      // For React Native versions >= 0.65, use this:
-      // return () => Dimensions.removeEventListener('change', updateLayout);
-    };
   }, []);
 
   const selectedOption = options.find(option => option.value === selectedValue);
@@ -47,9 +42,8 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.pickerButton} onPress={() => setModalVisible(true)}>
-        <Text style={styles.labelText}>{label}</Text>
-        <Text style={styles.selectedText} numberOfLines={1} ellipsizeMode="tail">
-          {selectedOption?.label || 'Select...'}
+        <Text style={selectedOption?.value === '' || selectedOption ? styles.selectedText : styles.labelText} numberOfLines={1} ellipsizeMode="tail">
+          {selectedOption?.value === '' ? label : selectedOption?.label}
         </Text>
         <Icon name="chevron-down" size={20} color="#666" />
       </TouchableOpacity>
@@ -94,7 +88,7 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
               style={styles.closeButton}
               onPress={() => setModalVisible(false)}
             >
-              <Text style={styles.closeButtonText}>Close</Text>
+              <Text style={styles.closeButtonText}>Fechar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -106,28 +100,29 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    width: '100%',
+    width: '30%',
   },
   pickerButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: gray2,
     borderRadius: 5,
     padding: 10,
     minHeight: 50,
   },
   labelText: {
-    fontSize: 14,
-    color: '#333',
+    fontSize: 12,
+    color: gray,
     flex: 1,
   },
   selectedText: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: 14,
+    color: gray,
     flex: 2,
     textAlign: 'right',
+    fontWeight: 'bold',
     marginRight: 10,
   },
   modalOverlay: {
@@ -136,7 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -154,27 +149,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: gray2,
   },
   selectedItem: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: white,
   },
   optionText: {
+    color: gray,
     fontSize: 18,
     flex: 1,
   },
   selectedItemText: {
-    color: '#007AFF',
+    color: gray,
     fontWeight: 'bold',
   },
   closeButton: {
     marginTop: 20,
     paddingVertical: 10,
-    backgroundColor: '#007AFF',
+    backgroundColor: lightGreen,
     borderRadius: 5,
   },
   closeButtonText: {
-    color: 'white',
+    color: white,
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',

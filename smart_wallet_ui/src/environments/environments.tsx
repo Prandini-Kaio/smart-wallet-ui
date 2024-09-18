@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 
-export const IP_URL = 'http://192.168.1.27:8080/api/v1';
+export const IP_URL = 'http://192.168.1.9:8080/api/v1';
 
 interface EnvironmentContextType {
     apiUrl: string;
