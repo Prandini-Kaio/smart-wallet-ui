@@ -48,5 +48,10 @@ export const style = StyleSheet.create({
         fontSize: 32,
         borderBottomColor: gray,
         borderBottomWidth: 0.5
-    }
+    },
+    datePickerContainer: {
+        padding: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
 });

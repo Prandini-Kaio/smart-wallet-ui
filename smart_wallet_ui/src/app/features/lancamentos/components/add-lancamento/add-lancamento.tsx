@@ -10,6 +10,9 @@ import { useLancamentoService } from "../../services/lancamentos.service";
 import { useIsFocused } from "@react-navigation/native";
 import { useContaService } from "../../../contas/services/contas.service";
 import { PickerItem } from "../../../../shared/utils/interface-utils";
+import DatePickerCustom from "../../../visualizar-lancamentos/components/filter-picker/date-picker";
+import DatePicker from "react-native-date-picker";
+import { formatDate, formatDateTime, formatDateTimeFimDia } from "../../services/usecases/date-utils.service";
 
 export default function AddLancamento({ navigation }: any) {
 
@@ -29,6 +32,9 @@ export default function AddLancamento({ navigation }: any) {
 
     const [categoriaItemsPicker, setCategoriaItemsPicker] = useState<PickerItem[]>([]);
     const [contaItemsPicker, setContaItemsPicker] = useState<PickerItem[]>([]);
+
+    const [data, setData] = useState(new Date());
+    const [dataOpen, setDataOpen] = useState(false);
 
     const toggleSwitchCredito = () => {
         setIsCredito(prevState => !prevState);
@@ -63,7 +69,7 @@ export default function AddLancamento({ navigation }: any) {
             parcelas: parseInt(parcelas),
             descricao: descricao,
             icone: '',
-            dtCriacao: '',
+            dtCriacao: formatDateTime(data),
             status: StatusLancamento.EM_ABERTO,
             dtAlteracaoStatus: ''
         }
@@ -97,7 +103,7 @@ export default function AddLancamento({ navigation }: any) {
                     value: conta.banco
                 };
             });
-            setContaItemsPicker([...contaItems, {label: '...', value: ''}]);
+            setContaItemsPicker([...contaItems, { label: '...', value: '' }]);
         })
     }, [focus])
 
@@ -148,6 +154,18 @@ export default function AddLancamento({ navigation }: any) {
                     keyboardType='number-pad'
                     value={valor}
                     onChangeText={setValor}
+                />
+            </View>
+
+            <View style={style.datePickerContainer}>
+                {/* <Text style={{
+                    color: enableCredito ? gray2 : black,
+                    fontWeight: 'bold'
+                }}
+                >Data de lançamento</Text> */}
+                <DatePickerCustom
+                    setDtInicioOpen={() => setDataOpen(true)}
+                    date={data}
                 />
             </View>
 
@@ -226,6 +244,20 @@ export default function AddLancamento({ navigation }: any) {
                     </View>
                 </TouchableHighlight>
             </View>
+
+            <DatePicker
+                modal
+                date={data}
+                open={dataOpen}
+                mode="date"
+                onConfirm={(date) => {
+                    setDataOpen(false);
+                    setData(date);
+                }}
+                onCancel={() => {
+                    setDataOpen(false);
+                }}
+            />
         </SafeAreaView >
     )
 }

@@ -5,7 +5,7 @@ import { Conta, TipoLancamento } from "../../../../shared/services/api/api-conte
 import { black, gold, white } from "../../../../shared/utils/style-constants";
 import { useContaService } from "../../../contas/services/contas.service";
 import { useLancamentoService } from "../../../lancamentos/services/lancamentos.service";
-import { formatDateTime } from "../../../lancamentos/services/usecases/date-utils.service";
+import { formatDateTimeFimDia } from "../../../lancamentos/services/usecases/date-utils.service";
 import { TransacaoFilter } from "../../services/entity/transacao-entity";
 import DatePickerCustom from "../filter-picker/date-picker";
 import CustomPicker, { PickerOption } from "../filter-picker/picker";
@@ -22,10 +22,10 @@ const FiltrosLancamento = ({onChangeFilter}: any) => {
     const { consultarContas } = useContaService();
 
     const [dtInicioOpen, setDtInicioOpen] = useState(false);
-    const [dtInicio, setDtInicio] = useState(new Date(today.getFullYear(), today.getMonth() - 1, 1));
+    const [dtInicio, setDtInicio] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
 
     const [dtFimOpen, setDtFimOpen] = useState(false);
-    const [dtFim, setDtFim] = useState(new Date(today.getFullYear(), today.getMonth() + 1, 0));
+    const [dtFim, setDtFim] = useState(new Date(today.getFullYear(), today.getMonth() + 2, 0));
 
     const [tipo, setTipo] = useState('');
     const [tipoItemsPicker, setTipoItemsPicker] = useState<PickerOption[]>([
@@ -66,8 +66,8 @@ const FiltrosLancamento = ({onChangeFilter}: any) => {
             categoria: categoria,
             pagamento: tipoPagamento,
             status: status,
-            dtInicio: formatDateTime(dtInicio, false),
-            dtFim: formatDateTime(dtFim, true),
+            dtInicio: formatDateTimeFimDia(dtInicio, false),
+            dtFim: formatDateTimeFimDia(dtFim, true),
             conta: conta,
         }
 
@@ -196,7 +196,6 @@ const FiltrosLancamento = ({onChangeFilter}: any) => {
                 onConfirm={(date) => {
                     setDtInicioOpen(false);
                     setDtInicio(date);
-                    handleFind();
                 }}
                 onCancel={() => {
                     setDtInicioOpen(false);
@@ -211,7 +210,6 @@ const FiltrosLancamento = ({onChangeFilter}: any) => {
                 onConfirm={(date) => {
                     setDtFimOpen(false);
                     setDtFim(date);
-                    handleFind();
                 }}
                 onCancel={() => {
                     setDtFimOpen(false);

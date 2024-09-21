@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 20,
   },
   flatListContainer: {
-    height: '78%',
+    height: '75%',
     alignItems: 'center',
   },
   payButton: {

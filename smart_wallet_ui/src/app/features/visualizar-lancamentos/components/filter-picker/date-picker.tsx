@@ -5,12 +5,12 @@ import { black, gray, lightGreen } from '../../../../shared/utils/style-constant
 
 const { width } = Dimensions.get('window'); // Obtém a largura da tela
 
-interface YourComponentProps {
+interface Props {
   setDtInicioOpen: (open: boolean) => void;
   date: Date
 }
 
-const DatePickerCustom: React.FC<YourComponentProps> = ({ setDtInicioOpen, date }) => {
+const DatePickerCustom: React.FC<Props> = ({ setDtInicioOpen, date }) => {
   return (
     <TouchableOpacity
       style={styles.button}
