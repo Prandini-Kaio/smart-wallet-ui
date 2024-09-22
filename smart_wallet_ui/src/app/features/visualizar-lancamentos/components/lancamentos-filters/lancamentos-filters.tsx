@@ -1,7 +1,7 @@
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableHighlight, View } from "react-native";
-import { Conta, TipoLancamento } from "../../../../shared/services/api/api-context";
+import { Conta, TipoLancamento, useAPI } from "../../../../shared/services/api/api-context";
 import { black, gold, white } from "../../../../shared/utils/style-constants";
 import { useContaService } from "../../../contas/services/contas.service";
 import { useLancamentoService } from "../../../lancamentos/services/lancamentos.service";
@@ -11,8 +11,9 @@ import DatePickerCustom from "../filter-picker/date-picker";
 import CustomPicker, { PickerOption } from "../filter-picker/picker";
 import PaymentPicker from "../payment-picker/payment-picker";
 import DatePicker from "react-native-date-picker";
+import { showMessage } from "react-native-flash-message";
 
-const FiltrosLancamento = ({onChangeFilter}: any) => {
+const FiltrosLancamento = ({onChangeFilter, selectedTransactions}: any) => {
 
     const focus = useIsFocused();
 
@@ -20,6 +21,7 @@ const FiltrosLancamento = ({onChangeFilter}: any) => {
 
     const { consultarCategorias } = useLancamentoService();
     const { consultarContas } = useContaService();
+    const { payAllTransactions, payTransaction } = useAPI();
 
     const [dtInicioOpen, setDtInicioOpen] = useState(false);
     const [dtInicio, setDtInicio] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
@@ -58,8 +60,20 @@ const FiltrosLancamento = ({onChangeFilter}: any) => {
 
     const [filter, setFilter] = useState<TransacaoFilter>();
 
-    const handleFind = () => {
-        const f: TransacaoFilter = {
+    const filtroVazio: TransacaoFilter = {
+        id: null,
+        idLancamento: null,
+        tipo: tipo != '' ? TipoLancamento[tipo as keyof typeof TipoLancamento] : '',
+        categoria: categoria,
+        pagamento: tipoPagamento,
+        status: status,
+        dtInicio: formatDateTimeFimDia(dtInicio, false),
+        dtFim: formatDateTimeFimDia(dtFim, true),
+        conta: conta,
+    }
+
+    function montarFiltro(){
+        const filtro: TransacaoFilter = {
             id: null,
             idLancamento: null,
             tipo: tipo != '' ? TipoLancamento[tipo as keyof typeof TipoLancamento] : '',
@@ -71,16 +85,41 @@ const FiltrosLancamento = ({onChangeFilter}: any) => {
             conta: conta,
         }
 
-        setFilter(f);
-        onChangeFilter(f);
+        return filtro;
+    } 
+
+
+    const handleFind = () => {
+        const filtro = montarFiltro();
+
+        setFilter(filtro);
+        onChangeFilter(filtro);
     }
 
     const handlePayAll = () => {
-        console.log("Pay All");
+        const filtro : TransacaoFilter = montarFiltro() || filtroVazio;
+
+        payAllTransactions(filtro)
+        .then((result) => {
+            showMessage({
+                message: "Todas as transações foram pagas",
+                type: 'success',
+                duration: 3000,
+            });
+        });
     }
 
     const handlePaySelected = () => {
-        console.log("Pay selected")
+        const filtro : TransacaoFilter = montarFiltro() || filtroVazio;
+
+        payTransaction(selectedTransactions)
+        .then((result) => {
+            showMessage({
+                message: "Todas as transações foram pagas",
+                type: 'success',
+                duration: 3000,
+            });
+        });
     }
 
     useEffect(() => {
@@ -182,7 +221,7 @@ const FiltrosLancamento = ({onChangeFilter}: any) => {
 
             <View style={styles.actionContainer}>
                 <View style={styles.paymentPickerContainer}>
-                    <PaymentPicker onPayAll={handlePayAll} onPaySelected={handlePaySelected} />
+                    <PaymentPicker onPayAll={handlePayAll} onPaySelected={handlePaySelected} selected={selectedTransactions > 0}/>
                 </View>
             </View>
 

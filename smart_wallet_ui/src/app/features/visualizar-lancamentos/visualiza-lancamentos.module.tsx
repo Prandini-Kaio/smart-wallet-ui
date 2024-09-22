@@ -59,7 +59,7 @@ export const VisualizarLancamentos: React.FC = () => {
     <View style={styles.container}>
 
       <TransacaoHeader filter={filter} />
-      <FiltrosLancamento onChangeFilter={setFilter}/>
+      <FiltrosLancamento onChangeFilter={setFilter} selectedTransactions={selectedTransacoes}/>
 
       <View style={styles.listContainer}>
         <SafeAreaView style={styles.flatListContainer}>
@@ -70,16 +70,6 @@ export const VisualizarLancamentos: React.FC = () => {
           />
         </SafeAreaView>
       </View>
-      {selectedTransacoes.length > 0 && (
-        <TouchableOpacity
-          style={styles.payButton}
-          onPress={handlePaySelected}
-        >
-          <Text style={styles.payButtonText}>
-            Pay Selected ({selectedTransacoes.length})
-          </Text>
-        </TouchableOpacity>
-      )}
     </View>
   );
 };

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
-import { black, gold, gray, white } from '../../../../shared/utils/style-constants';
+import { black, gold, gray, gray2, white } from '../../../../shared/utils/style-constants';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 
 interface PaymentPickerProps {
   onPayAll: () => void;
   onPaySelected: () => void;
+  selected: boolean
 }
 
-const PaymentPicker: React.FC<PaymentPickerProps> = ({ onPayAll, onPaySelected }) => {
+const PaymentPicker: React.FC<PaymentPickerProps> = ({ onPayAll, onPaySelected, selected }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleModal = (): void => setIsOpen(!isOpen);
@@ -38,11 +40,11 @@ const PaymentPicker: React.FC<PaymentPickerProps> = ({ onPayAll, onPaySelected }
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <TouchableOpacity style={styles.option} onPress={handlePayAll}>
-              <Text style={styles.optionText}>Pagar todos</Text>
+            <TouchableOpacity style={styles.option} onPress={handlePayAll} disabled={selected}>
+              <Text style={{...styles.optionText, color: !selected ? gray : gray2}}>Pagar todos</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.option} onPress={handlePaySelected}>
-              <Text style={styles.optionText}>Pagar selecionados</Text>
+            <TouchableOpacity style={styles.option} onPress={handlePaySelected} disabled={!selected}>
+              <Text style={{...styles.optionText, color: selected ? gray : gray2}}>Pagar selecionados</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={toggleModal}>
               <Text style={styles.cancelButtonText}>Cancelar</Text>

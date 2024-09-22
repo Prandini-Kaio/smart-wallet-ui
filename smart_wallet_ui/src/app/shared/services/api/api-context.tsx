@@ -303,7 +303,7 @@ function APIProvider({ children }: any) {
         dtFim: filter.dtFim
       };
 
-      RequestBase<TransacaoResponse[]>(VerboseAPI.PUT, 'transacao/pagar', params)
+      RequestBase<TransacaoResponse[]>(VerboseAPI.PUT, 'transacao/pagar-todos', params)
         .then(result => {
           showMessage({
             message: `Transacoes ${filter.conta} pagas com sucesso`,
