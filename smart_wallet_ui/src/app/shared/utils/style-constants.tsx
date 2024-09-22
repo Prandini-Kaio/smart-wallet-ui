@@ -24,3 +24,12 @@ export const skobeloff = '#0D6F73';
 export const pewterBlue = '#84BABF';
 
 export const lightBlue = '#3ac1d6';
+
+
+export const backgroundColor = white;
+export const principalColor = richBlack;
+export const secondaryColor = midnightGreen;
+export const clearColor = platina;
+export const shadowClearColor = skobeloff;
+
+export const highlightColor = seaBuckthorn;

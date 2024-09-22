@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
-import { black, gray, gray2, green, lightGreen, white } from "../../../../shared/utils/style-constants";
+import { backgroundColor, black, clearColor, gray, gray2, lightGreen, platina, principalColor, secondaryColor, white } from "../../../../shared/utils/style-constants";
 
 export const style = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: white,
+        backgroundColor: backgroundColor,
         padding: 5
     },
 
@@ -19,7 +19,7 @@ export const style = StyleSheet.create({
     },
 
     moneyContaineir: {
-        backgroundColor: gray2,
+        backgroundColor: secondaryColor,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
@@ -31,7 +31,7 @@ export const style = StyleSheet.create({
 
     contaPicker: {
         height:'30%', 
-        backgroundColor: lightGreen,
+        backgroundColor: principalColor,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 30
@@ -39,14 +39,14 @@ export const style = StyleSheet.create({
 
     txtConta: {
         fontSize: 14,
-        color: black,
+        color: clearColor,
         fontWeight: 'bold'
     },
 
     txtCash: {
-        color: gray,
+        color: clearColor,
         fontSize: 32,
-        borderBottomColor: gray,
+        borderBottomColor: clearColor,
         borderBottomWidth: 0.5
     },
     datePickerContainer: {

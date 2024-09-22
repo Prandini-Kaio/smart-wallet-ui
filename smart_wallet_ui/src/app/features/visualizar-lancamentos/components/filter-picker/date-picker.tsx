@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Dimensions, GestureResponderEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { black, gray, lightGreen } from '../../../../shared/utils/style-constants';
+import { black, clearColor, gray, lightGreen, principalColor, highlightColor, secondaryColor, shadowClearColor, pewterBlue } from '../../../../shared/utils/style-constants';
 
 const { width } = Dimensions.get('window'); // Obtém a largura da tela
 
@@ -17,11 +17,11 @@ const DatePickerCustom: React.FC<Props> = ({ setDtInicioOpen, date }) => {
       onPress={(event: GestureResponderEvent) => setDtInicioOpen(true)}
     >
       <Icon
-        color={lightGreen}
+        color={principalColor}
         name="calendar"
         size={width * 0.05} // Tamanho do ícone relativo à largura da tela (5% da largura)
       />
-      <Text style={[styles.text, { color: gray }]}>{date.toLocaleDateString('pt-br')}</Text>
+      <Text style={[styles.text, { color: pewterBlue }]}>{date.toLocaleDateString('pt-br')}</Text>
     </TouchableOpacity>
   );
 };
@@ -30,17 +30,17 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: gray,
+    borderColor: shadowClearColor,
     borderWidth: 0.5,
     borderRadius: 20,
-    paddingHorizontal: width * 0.03, // Padding horizontal relativo à largura da tela (3%)
-    paddingVertical: width * 0.02, // Padding vertical (2%)
-    marginVertical: 10, // Margem vertical para separação dos elementos
+    paddingHorizontal: width * 0.03,
+    paddingVertical: width * 0.02,
+    marginVertical: 10,
   },
   text: {
-    color: black,
-    fontSize: width * 0.04, // Tamanho do texto proporcional (4% da largura)
-    marginLeft: 10, // Espaçamento entre o ícone e o texto
+    color: principalColor,
+    fontSize: width * 0.04,
+    marginLeft: 10,
   },
 });
 

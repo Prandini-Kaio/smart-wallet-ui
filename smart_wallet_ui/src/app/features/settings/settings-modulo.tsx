@@ -1,5 +1,5 @@
 import { Animated, Button, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { black, gray, gray2, green, lightGreen, red, white } from "../../shared/utils/style-constants";
+import { backgroundColor, black, clearColor, gray, gray2, green, highlightColor, lightGreen, principalColor, red, secondaryColor, shadowClearColor, white } from "../../shared/utils/style-constants";
 import { useEffect, useRef, useState } from "react";
 import { useEnvironment } from "../../../environments/environments";
 import { useAPI } from "../../shared/services/api/api-context";
@@ -25,7 +25,7 @@ export default function SettingsModule() {
                 else
                     setStatusApi(false);
             }).catch((error) => {
-                console.trace(error);
+                setStatusApi(false);
             })
     }, [apiUrl]);
 
@@ -131,7 +131,7 @@ export default function SettingsModule() {
             </Animated.View>
 
             <View style={{ width: '100%', position: 'absolute', bottom: 0, marginHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={{ fontSize: 11, fontWeight: 'bold', color: black }}>{apiUrl}</Text>
+                <Text style={{ fontSize: 11, fontWeight: 'bold', color: clearColor }}>{apiUrl}</Text>
                 <Text style={{ fontSize: 12, fontWeight: 'bold', color: statusApi ? green : red }}>{statusApi ? 'OK' : 'Offline'}</Text>
             </View>
         </View>
@@ -142,10 +142,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: white,
+        backgroundColor: principalColor,
     },
     title: {
-        color: gray,
+        color: clearColor,
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
@@ -156,36 +156,36 @@ const styles = StyleSheet.create({
     },
     menuLeftButton: {
         flex: 1,
-        backgroundColor: white,
+        backgroundColor: backgroundColor,
         padding: 15,
         borderRightWidth: 0.5,
-        borderRightColor: gray2,
+        borderRightColor: clearColor,
         borderBottomStartRadius: 25,
         alignItems: 'center',
     },
 
     menuRightButton: {
         flex: 1,
-        backgroundColor: white,
+        backgroundColor: backgroundColor,
         padding: 15,
         borderLeftWidth: 0.5,
-        borderLeftColor: gray2,
+        borderLeftColor: clearColor,
         borderBottomEndRadius: 25,
         alignItems: 'center',
     },
     activeButton: {
-        backgroundColor: lightGreen,
+        backgroundColor: secondaryColor,
     },
     buttonText: {
-        color: lightGreen,
+        color: principalColor,
     },
     activeButtonText: {
-        color: white,
+        color: clearColor,
         fontWeight: 'bold'
     },
     contentContainer: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: backgroundColor,
         borderRadius: 5,
         padding: 20,
     },
@@ -198,25 +198,27 @@ const styles = StyleSheet.create({
     settingItem: {
         padding: 15,
         borderBottomWidth: 1,
-        borderBottomColor: '#e0e0e0',
+        borderBottomColor: clearColor,
     },
     input: {
         color: black,
         borderWidth: 1,
-        borderColor: '#ddd',
+        borderColor: shadowClearColor,
         padding: 10,
         borderRadius: 5,
         marginTop: 5,
     },
     saveButton: {
-        backgroundColor: '#007AFF',
+        backgroundColor: highlightColor,
         padding: 10,
         borderRadius: 5,
         marginTop: 10,
         alignItems: 'center',
+        justifyContent: 'center'
     },
     saveButtonText: {
-        color: '#ffffff',
+        color: principalColor,
+        fontWeight: 'bold'
     },
     txt: {
         color: black,

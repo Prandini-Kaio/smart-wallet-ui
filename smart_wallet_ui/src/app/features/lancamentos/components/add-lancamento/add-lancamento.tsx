@@ -1,18 +1,18 @@
-import { Button, SafeAreaView, Switch, Text, TextInput, TouchableHighlight, View } from "react-native"
-import { black, gold, gray, gray2, green, lightGray, lightGreen, white, yellow } from "../../../../shared/utils/style-constants"
-import { style } from "./style"
-import { useEffect, useState } from "react"
-import { InputPickerText, InputText } from "../../../../shared/components/input-form/input-form";
 import { Picker } from "@react-native-picker/picker";
-import { LancamentoResponse } from "../../services/entity/lancamento.entity";
-import { Conta, StatusLancamento, TipoLancamento, TipoPagamento } from "../../../../shared/services/api/api-context";
-import { useLancamentoService } from "../../services/lancamentos.service";
 import { useIsFocused } from "@react-navigation/native";
-import { useContaService } from "../../../contas/services/contas.service";
-import { PickerItem } from "../../../../shared/utils/interface-utils";
-import DatePickerCustom from "../../../visualizar-lancamentos/components/filter-picker/date-picker";
+import { useEffect, useState } from "react";
+import { SafeAreaView, Switch, Text, TextInput, TouchableHighlight, View } from "react-native";
 import DatePicker from "react-native-date-picker";
-import { formatDate, formatDateTime, formatDateTimeFimDia } from "../../services/usecases/date-utils.service";
+import { InputPickerText, InputText } from "../../../../shared/components/input-form/input-form";
+import { Conta, StatusLancamento, TipoLancamento, TipoPagamento } from "../../../../shared/services/api/api-context";
+import { PickerItem } from "../../../../shared/utils/interface-utils";
+import { backgroundColor, black, clearColor, gold, gray, gray2, lightGray, lightGreen, platina, principalColor, highlightColor, secondaryColor, shadowClearColor, white } from "../../../../shared/utils/style-constants";
+import { useContaService } from "../../../contas/services/contas.service";
+import DatePickerCustom from "../../../visualizar-lancamentos/components/filter-picker/date-picker";
+import { LancamentoResponse } from "../../services/entity/lancamento.entity";
+import { useLancamentoService } from "../../services/lancamentos.service";
+import { formatDateTime } from "../../services/usecases/date-utils.service";
+import { style } from "./style";
 
 export default function AddLancamento({ navigation }: any) {
 
@@ -114,9 +114,9 @@ export default function AddLancamento({ navigation }: any) {
                 onValueChange={(item) => setConta(item)}
                 style={{
                     width: 125,
-                    color: black,
+                    color: clearColor,
                 }}
-                dropdownIconColor={black}
+                dropdownIconColor={clearColor}
                 mode='dropdown'
             >
                 {contaItemsPicker.map((item, index) => (
@@ -145,12 +145,13 @@ export default function AddLancamento({ navigation }: any) {
 
             <View style={style.moneyContaineir}>
                 <Text style={{
-                    color: gray,
+                    color: clearColor,
                     fontSize: 32
                 }}>R$</Text>
                 <TextInput
                     style={style.txtCash}
-                    placeholderTextColor={lightGray}
+                    placeholderTextColor={shadowClearColor}
+                    placeholder="10"
                     keyboardType='number-pad'
                     value={valor}
                     onChangeText={setValor}
@@ -158,11 +159,6 @@ export default function AddLancamento({ navigation }: any) {
             </View>
 
             <View style={style.datePickerContainer}>
-                {/* <Text style={{
-                    color: enableCredito ? gray2 : black,
-                    fontWeight: 'bold'
-                }}
-                >Data de lançamento</Text> */}
                 <DatePickerCustom
                     setDtInicioOpen={() => setDataOpen(true)}
                     date={data}
@@ -177,7 +173,7 @@ export default function AddLancamento({ navigation }: any) {
                     }}
                     >Crédito</Text>
                     <Switch
-                        trackColor={{ false: gray2, true: lightGreen }}
+                        trackColor={{ false: gray2, true: secondaryColor }}
                         thumbColor={white}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={toggleSwitchCredito}
@@ -188,12 +184,12 @@ export default function AddLancamento({ navigation }: any) {
 
                 <View style={{}}>
                     <Text style={{
-                        color: enableCredito ? gray2 : black,
+                        color: black,
                         fontWeight: 'bold'
                     }}
                     >Saída</Text>
                     <Switch
-                        trackColor={{ false: gray2, true: lightGreen }}
+                        trackColor={{ false: gray2, true: secondaryColor }}
                         thumbColor={white}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={toggleSwitchSaida}
@@ -223,24 +219,24 @@ export default function AddLancamento({ navigation }: any) {
                 style={{
                     width: '95%',
                     height: 150,
-                    borderColor: lightGray,
+                    borderColor: shadowClearColor,
                     borderWidth: 0.5,
                     borderRadius: 20,
-                    color: gray
+                    color: secondaryColor
                 }}
                 placeholder="Descricao"
-                placeholderTextColor={gray2}
+                placeholderTextColor={clearColor}
                 value={descricao}
                 onChangeText={setDescricao}
             />
             <View style={{ width: '40%', justifyContent: 'center' }}>
                 <TouchableHighlight
                     activeOpacity={0.5}
-                    underlayColor={white}
+                    underlayColor={backgroundColor}
                     onPress={handleSubmit}
                 >
-                    <View style={{ backgroundColor: gold, padding: 10, marginVertical: 10, borderRadius: 30, alignItems: 'center' }}>
-                        <Text style={{ color: black, fontWeight: 'bold' }}>ENVIAR</Text>
+                    <View style={{ backgroundColor: highlightColor, padding: 10, marginVertical: 10, borderRadius: 30, alignItems: 'center' }}>
+                        <Text style={{ color: principalColor, fontWeight: 'bold' }}>ENVIAR</Text>
                     </View>
                 </TouchableHighlight>
             </View>
