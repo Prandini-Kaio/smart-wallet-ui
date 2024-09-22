@@ -9,3 +9,10 @@ export const black = "#4D4D4D"
 export const purple = "#998FC7"
 export const yellow = "#F8CB2E"
 export const gold = "#FDC92E"
+
+
+export const blueDianne = '#254252';
+export const mirage = '#171C2D'
+export const redDamask = '#E37239'
+export const seaBuckthorn = '#F9982F'
+export const porsche = '#EAB56F'

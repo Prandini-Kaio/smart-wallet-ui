@@ -44,6 +44,7 @@ export interface Conta {
   diaVencimento: string;
   saldoParcial: number;
   tipoConta: TipoConta;
+  color: string;
 }
 
 export interface TotalizadorFinanceiro {
