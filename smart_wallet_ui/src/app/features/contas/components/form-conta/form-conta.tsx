@@ -30,7 +30,8 @@ export default function FormAddConta({ navigation, visible, hideModal }: any) {
       dtVencimento: dtVencimento,
       diaVencimento: diaVencimento,
       saldoParcial: 0,
-      tipoConta: tipoConta
+      tipoConta: tipoConta,
+      color: ''
     }
 
     createConta(conta);
@@ -83,16 +84,6 @@ export default function FormAddConta({ navigation, visible, hideModal }: any) {
             placeholder="Poupanca"
             value={nome}
             onChangeText={setNome}
-          />
-
-          <Text style={style.label}>Vencimento</Text>
-
-          <TextInput
-            style={style.input}
-            placeholderTextColor={gray2}
-            placeholder="21/12"
-            value={dtVencimento}
-            onChangeText={setDtVencimento}
           />
 
           <TextInput

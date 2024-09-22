@@ -26,7 +26,8 @@ function mockContas(){
         dtVencimento : '01/05',
         diaVencimento: '1',
         saldoParcial: 120,
-        tipoConta: TipoConta.CORRENTE_POUPANCA
+        tipoConta: TipoConta.CORRENTE_POUPANCA,
+        color: ''
       };
 
       contas.push(conta);
@@ -101,7 +102,9 @@ function CardContas({nome, banco, dtVencimento, tipoConta, saldoParcial}: Conta)
           nome={item.nome}
           dtVencimento={item.dtVencimento}
           diaVencimento={item.diaVencimento}
-          tipoConta={item.tipoConta}        />
+          tipoConta={item.tipoConta}
+          color={item.color}  
+        />
       </TouchableOpacity>
     );
   };

@@ -1,12 +1,14 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { green, white } from '../../utils/style-constants';;
-import ButtonTabBar from '../../components/button-tabbar/button-tabbar';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ContaScreen from '../../../core/contas/contas';
 import Home from '../../../core/home/home';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Settings from '../../../core/settings/settings';
 import AddLancamento from '../../../features/lancamentos/components/add-lancamento/add-lancamento';
 import { VisualizarLancamentos } from '../../../features/visualizar-lancamentos/visualiza-lancamentos.module';
-import Settings from '../../../core/settings/settings';
+import ButtonTabBar from '../../components/button-tabbar/button-tabbar';
+import { gray2, midnightGreen, richBlack, white } from '../../utils/style-constants';
+import { StyleSheet } from 'react-native';
+;
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,7 +29,15 @@ function TabScreens() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarActiveTintColor: green,
+        tabBarActiveTintColor: midnightGreen,
+        tabBarStyle: {
+          backgroundColor: richBlack,
+          height: 60,
+          ...styles.shadow,
+        },
+        tabBarItemStyle: {
+          borderRadius: 15,
+        },
       }}>
 
       <Tab.Screen
@@ -39,12 +49,15 @@ function TabScreens() {
               defaultColor={white}
               color={color}
               focused={focused}
-              icon={'home'}></ButtonTabBar>
+              icon={'home'}
+            >
+
+            </ButtonTabBar>
           ),
         }}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Secondary"
         component={ContaScreen}
         options={{
@@ -56,7 +69,7 @@ function TabScreens() {
               icon={'cash'}></ButtonTabBar>
           ),
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name="AppSettings"
@@ -74,3 +87,16 @@ function TabScreens() {
     </Tab.Navigator>
   )
 }
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
+});

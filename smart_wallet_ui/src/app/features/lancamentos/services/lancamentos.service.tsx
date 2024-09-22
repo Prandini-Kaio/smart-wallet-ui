@@ -43,7 +43,7 @@ export const useLancamentoService = () => {
 
         const lancamentos = await read(LANCAMENTOS_STORAGE_KEY);
 
-        return lancamentos;
+        return JSON.parse(lancamentos);
     }
 
     const consultarCategorias = async () => {
