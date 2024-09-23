@@ -1,13 +1,13 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ContaScreen from '../../../core/contas/contas';
+import { StyleSheet } from 'react-native';
 import Home from '../../../core/home/home';
 import Settings from '../../../core/settings/settings';
+import Contas from '../../../features/contas/components/contas';
 import AddLancamento from '../../../features/lancamentos/components/add-lancamento/add-lancamento';
 import { VisualizarLancamentos } from '../../../features/visualizar-lancamentos/visualiza-lancamentos.module';
 import ButtonTabBar from '../../components/button-tabbar/button-tabbar';
-import { gray2, midnightGreen, richBlack, white } from '../../utils/style-constants';
-import { StyleSheet } from 'react-native';
+import { midnightGreen, richBlack, secondaryColor, textLightColor, white } from '../../utils/style-constants';
 ;
 
 const Stack = createNativeStackNavigator();
@@ -17,8 +17,9 @@ export default function Pages() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="TabScreens" component={TabScreens} options={{ headerShown: false }} />
-      <Stack.Screen name="VisualizarLancamentos" component={VisualizarLancamentos} options={{ headerTitle: "Visualizar Lancamentos" }} />
-      <Stack.Screen name="AddLancamento" component={AddLancamento} options={{ headerTitle: "Novo Lancamento" }} />
+      <Stack.Screen name="VisualizarLancamentos" component={VisualizarLancamentos} options={{ headerTitle: "Novo Lancamento", headerStyle:{backgroundColor: secondaryColor, }, headerTitleStyle:{ color: textLightColor}}}/>
+      <Stack.Screen name="Contas" component={Contas} options={{ headerTitle: "Detalhes", headerStyle:{backgroundColor: secondaryColor, }, headerTitleStyle:{ color: textLightColor}}} />
+      <Stack.Screen name="AddLancamento" component={AddLancamento} options={{ headerTitle: "Novo Lancamento", headerStyle:{backgroundColor: secondaryColor, }, headerTitleStyle:{ color: textLightColor}}} />
     </Stack.Navigator>
   );
 }

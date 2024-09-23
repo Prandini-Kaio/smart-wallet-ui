@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
-import { black, gold, gray, gray2, white } from '../../../../shared/utils/style-constants';
+import { backgroundColor, black, clearColor, gold, gray, gray2, highlightColor, red, textBlackColor, textLightColor, textLightSecondaryColor, white } from '../../../../shared/utils/style-constants';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { setEnabled } from 'react-native/Libraries/Performance/Systrace';
 
@@ -41,10 +41,10 @@ const PaymentPicker: React.FC<PaymentPickerProps> = ({ onPayAll, onPaySelected, 
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <TouchableOpacity style={styles.option} onPress={handlePayAll} disabled={selected}>
-              <Text style={{...styles.optionText, color: !selected ? gray : gray2}}>Pagar todos</Text>
+              <Text style={{...styles.optionText, color: !selected ? textBlackColor : textLightSecondaryColor}}>Pagar todos</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.option} onPress={handlePaySelected} disabled={!selected}>
-              <Text style={{...styles.optionText, color: selected ? gray : gray2}}>Pagar selecionados</Text>
+              <Text style={{...styles.optionText, color: selected ? textBlackColor : textLightSecondaryColor}}>Pagar selecionados</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelButton} onPress={toggleModal}>
               <Text style={styles.cancelButtonText}>Cancelar</Text>
@@ -64,10 +64,10 @@ const styles = StyleSheet.create({
     padding: 5,
     margin: 5,
     borderRadius: 5,
-    backgroundColor: gold
+    backgroundColor: highlightColor
   },
   buttonText: {
-    color: white,
+    color: textLightColor,
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 14,
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: backgroundColor,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
@@ -86,10 +86,10 @@ const styles = StyleSheet.create({
   option: {
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#ECECEC',
+    borderBottomColor: clearColor,
   },
   optionText: {
-    color: gray,
+    color: textBlackColor,
     fontSize: 18,
     textAlign: 'center',
   },
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   cancelButtonText: {
-    color: 'red',
+    color: red,
     textAlign: 'center',
     fontSize: 18,
   },

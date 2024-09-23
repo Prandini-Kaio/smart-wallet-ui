@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, SafeAreaView, Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import { black, gold, gray, green, lightGreen, red, white } from "../../shared/utils/style-constants";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
+import { useAPI } from "../../shared/services/api/api-context";
+import { backgroundColor, black, green, white } from "../../shared/utils/style-constants";
+import { TransacaoResponse } from "../lancamentos/services/entity/transacao.entity";
+import FiltrosLancamento from "./components/lancamentos-filters/lancamentos-filters";
 import { TransacaoHeader } from "./components/transacao-header/transacao-header";
 import { TransacaoItem } from "./components/transacao-item/transacao-item";
-import { TransacaoResponse } from "../lancamentos/services/entity/transacao.entity";
-import { useAPI } from "../../shared/services/api/api-context";
 import { TransacaoFilter } from "./services/entity/transacao-entity";
-import FiltrosLancamento from "./components/lancamentos-filters/lancamentos-filters";
 
 interface APIContextType {
   getTransacoes: (filter: TransacaoFilter) => Promise<TransacaoResponse[]>;
@@ -51,10 +50,6 @@ export const VisualizarLancamentos: React.FC = () => {
     />
   );
 
-  const handlePaySelected = async () => {
-    console.trace("TESTE")
-  };
-
   return (
     <View style={styles.container}>
 
@@ -77,7 +72,7 @@ export const VisualizarLancamentos: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: white
+    backgroundColor: backgroundColor
   },
   listContainer: {
     borderTopColor: black,

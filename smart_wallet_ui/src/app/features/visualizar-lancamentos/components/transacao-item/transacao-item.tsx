@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { black, gold, gray2, green, lightGray, lightGreen, red, yellow } from "../../../../shared/utils/style-constants";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { TipoLancamento } from "../../../../shared/services/api/api-context";
+import { backgroundColor, black, clearColor, gold, gray2, green, highlightColor, lightBlue, lightGray, pewterBlue, platina, red, secondaryColor, textBlackColor, textLightSecondaryColor, yellow } from "../../../../shared/utils/style-constants";
 import { TransacaoResponse } from "../../../lancamentos/services/entity/transacao.entity";
-import { TipoLancamento, TipoPagamento } from "../../../../shared/services/api/api-context";
 import { StatusTransacaoEnum } from "../../services/entity/transacao-entity";
 
 interface Props {
@@ -29,49 +29,55 @@ export const TransacaoItem: React.FC<Props> = ({ transacao, isSelected, onSelect
     };
 
     return (
-        <TouchableOpacity
-            style={[styles.container, isSelected && styles.selectedContainer]}
-            onPress={() => onSelect(transacao.id)}
-        >
-            <View style={styles.iconContainer}>
-                <Icon name={transacao.lancamento.icone || 'help-circle'} size={32} color={black} />
-                {isSelected && <Icon name="check-circle" size={24} color={green} style={styles.checkIcon} />}
-            </View>
-            <View style={styles.descriptionContainer}>
-                <Text style={styles.mainDescription} numberOfLines={1}>{transacao.lancamento.descricao}</Text>
-                <Text style={styles.subDescription} numberOfLines={1}>{transacao.descricao}</Text>
-            </View>
-            <View style={styles.statusContainer}>
-                <Text style={[styles.statusText, { color: colorStatus() }]}>{transacao.status}</Text>
-                <Text style={styles.dateText}>{transacao.dtVencimento}</Text>
-            </View>
-            <View style={styles.valueContainer}>
-                <Text style={[
-                    styles.valueText,
-                    { color: transacao.lancamento.tipoLancamento === TipoLancamento.SAIDA ? red : green }
-                ]}>
-                    R$ {transacao.valor}
-                </Text>
-                <Text style={styles.accountText}>{transacao.lancamento.conta}</Text>
-            </View>
-        </TouchableOpacity>
+        <View style={styles.container}>
+            <TouchableOpacity
+                style={[styles.buttonContainer, isSelected && styles.selectedContainer]}
+                onPress={() => onSelect(transacao.id)}
+            >
+                <View style={styles.iconContainer}>
+                    <Icon name={transacao.lancamento.icone || 'help-circle'} size={38} color={black} />
+                    {isSelected && <Icon name="check-circle" size={24} color={highlightColor} style={styles.checkIcon} />}
+                </View>
+                <View style={styles.descriptionContainer}>
+                    <Text style={styles.mainDescription} numberOfLines={1}>{transacao.lancamento.descricao}</Text>
+                    <Text style={styles.subDescription} numberOfLines={1}>{transacao.descricao}</Text>
+                </View>
+                <View style={styles.statusContainer}>
+                    <Text style={[styles.statusText, { color: colorStatus() }]}>{transacao.status}</Text>
+                    <Text style={styles.dateText}>{transacao.dtVencimento}</Text>
+                </View>
+                <View style={styles.valueContainer}>
+                    <Text style={[
+                        styles.valueText,
+                        { color: transacao.lancamento.tipoLancamento === TipoLancamento.SAIDA ? red : green }
+                    ]}>
+                        R$ {transacao.valor}
+                    </Text>
+                    <Text style={styles.accountText}>{transacao.lancamento.conta}</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        width: '95%',
-        height: 65,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderRadius: 20,
-        borderBottomColor: lightGreen,
-        borderBottomWidth: 0.5,
-        paddingHorizontal: 10,
+        marginHorizontal: 5
     },
+    buttonContainer: {
+        width: '100%',
+        height: 70,
+        backgroundColor: backgroundColor,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottomColor: secondaryColor,
+        borderBottomWidth: 0.5,
+        paddingHorizontal: 10
+    },
+
     selectedContainer: {
-        backgroundColor: gray2,
+        backgroundColor: platina,
     },
     iconContainer: {
         width: '15%',
@@ -90,23 +96,25 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     mainDescription: {
-        color: black,
+        color: textBlackColor,
+        fontSize: 16,
         fontWeight: 'bold',
     },
     subDescription: {
-        color: black,
+        color: textBlackColor,
+        fontSize: 16,
     },
     statusContainer: {
         width: '25%',
         flexDirection: 'column',
     },
     statusText: {
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: 'bold',
     },
     dateText: {
-        fontSize: 12,
-        color: black,
+        color: textBlackColor,
+        fontSize: 14,
     },
     valueContainer: {
         width: '20%',
@@ -114,12 +122,12 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     valueText: {
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: 'bold',
     },
     accountText: {
-        fontSize: 8,
-        color: lightGray,
+        fontSize: 10,
+        color: textBlackColor,
         fontWeight: 'bold',
     },
 });

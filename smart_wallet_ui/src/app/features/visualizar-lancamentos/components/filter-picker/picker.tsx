@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet, Dimensions, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { black, gray, gray2, lightGray, lightGreen, white } from '../../../../shared/utils/style-constants';
+import { backgroundColor, black, clearColor, gray, gray2, green, highlightColor, lightGray, lightGreen, principalColor, secondaryColor, shadowClearColor, textBlackColor, textLightColor, textLightSecondaryColor, white } from '../../../../shared/utils/style-constants';
 
 export interface PickerOption {
   label: string;
@@ -45,7 +45,7 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
         <Text style={selectedOption?.value === '' || selectedOption ? styles.selectedText : styles.labelText} numberOfLines={1} ellipsizeMode="tail">
           {selectedOption?.value === '' ? label : selectedOption?.label}
         </Text>
-        <Icon name="chevron-down" size={20} color="#666" />
+        <Icon name="chevron-down" size={20} color={textBlackColor} />
       </TouchableOpacity>
 
       <Modal
@@ -79,7 +79,7 @@ export const CustomPicker: React.FC<CustomPickerProps> = ({
                     {item.label}
                   </Text>
                   {item.value === selectedValue && (
-                    <Icon name="check" size={20} color="#007AFF" />
+                    <Icon name="check" size={20} color={highlightColor} />
                   )}
                 </TouchableOpacity>
               )}
@@ -107,19 +107,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: gray2,
+    borderColor: secondaryColor,
     borderRadius: 5,
     padding: 10,
     minHeight: 50,
   },
   labelText: {
     fontSize: 12,
-    color: gray,
+    color: textBlackColor,
     flex: 1,
   },
   selectedText: {
     fontSize: 14,
-    color: gray,
+    color: textBlackColor,
     flex: 2,
     textAlign: 'right',
     fontWeight: 'bold',
@@ -131,13 +131,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: white,
+    backgroundColor: backgroundColor,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
     width: '100%',
   },
   modalTitle: {
+    color: textBlackColor,
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 15,
@@ -149,28 +150,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: gray2,
+    borderBottomColor: clearColor,
   },
   selectedItem: {
-    backgroundColor: white,
   },
   optionText: {
-    color: gray,
+    color: textLightSecondaryColor,
     fontSize: 18,
     flex: 1,
   },
   selectedItemText: {
-    color: gray,
+    color: textBlackColor,
     fontWeight: 'bold',
   },
   closeButton: {
     marginTop: 20,
     paddingVertical: 10,
-    backgroundColor: lightGreen,
+    backgroundColor: highlightColor,
     borderRadius: 5,
   },
   closeButtonText: {
-    color: white,
+    color: textLightColor,
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',

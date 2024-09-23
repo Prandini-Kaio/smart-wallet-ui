@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { TotalizadorFinanceiro } from "../../../../shared/services/api/api-context";
-import { black, green, red } from "../../../../shared/utils/style-constants";
+import { black, clearColor, green, principalColor, red } from "../../../../shared/utils/style-constants";
 import { QuadTotalizador } from "../quad-totalizador.tsx/quad-totalizador";
 import { TransacaoFilter } from "../../services/entity/transacao-entity";
 import { useGetTotalizador } from "../../services/repository/transacao-repository";
@@ -31,7 +31,7 @@ export const TransacaoHeader: React.FC<Props> = ({ filter }) => {
     }, [filter]);
 
     return (
-        <View style={{ flexDirection: 'row', margin: 15, gap: 12, justifyContent: 'center' }}>
+        <View style={styles.container}>
 
             <QuadTotalizador
                 iconName={"chevron-double-up"}
@@ -41,7 +41,7 @@ export const TransacaoHeader: React.FC<Props> = ({ filter }) => {
 
             <QuadTotalizador
                 iconName={"cash"}
-                iconColor={black}
+                iconColor={clearColor}
                 value={totalizador?.total}
             />
 
@@ -56,14 +56,17 @@ export const TransacaoHeader: React.FC<Props> = ({ filter }) => {
 
 const styles = StyleSheet.create({
     container: {
-        height: 150, // Adjust as needed
-        marginVertical: 10,
+        backgroundColor: principalColor,
+        flexDirection: 'row',
+        paddingVertical: 15, 
+        gap: 12, 
+        justifyContent: 'center'
     },
     scrollViewContent: {
         alignItems: 'center',
     },
     pickerContainer: {
-        width: 150, // Adjust based on your CustomPicker width
+        width: 150,
         marginHorizontal: 5,
     },
 });

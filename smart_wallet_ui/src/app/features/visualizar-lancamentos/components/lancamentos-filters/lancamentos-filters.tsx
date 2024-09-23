@@ -1,8 +1,10 @@
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import DatePicker from "react-native-date-picker";
+import { showMessage } from "react-native-flash-message";
 import { Conta, TipoLancamento, useAPI } from "../../../../shared/services/api/api-context";
-import { black, gold, white } from "../../../../shared/utils/style-constants";
+import { backgroundColor, highlightColor, principalColor, textLightColor } from "../../../../shared/utils/style-constants";
 import { useContaService } from "../../../contas/services/contas.service";
 import { useLancamentoService } from "../../../lancamentos/services/lancamentos.service";
 import { formatDateTimeFimDia } from "../../../lancamentos/services/usecases/date-utils.service";
@@ -10,8 +12,6 @@ import { TransacaoFilter } from "../../services/entity/transacao-entity";
 import DatePickerCustom from "../filter-picker/date-picker";
 import CustomPicker, { PickerOption } from "../filter-picker/picker";
 import PaymentPicker from "../payment-picker/payment-picker";
-import DatePicker from "react-native-date-picker";
-import { showMessage } from "react-native-flash-message";
 
 const FiltrosLancamento = ({onChangeFilter, selectedTransactions}: any) => {
 
@@ -229,8 +229,8 @@ const FiltrosLancamento = ({onChangeFilter, selectedTransactions}: any) => {
                 modal
                 date={dtInicio}
                 open={dtInicioOpen}
-                style={{ backgroundColor: black }}
-                buttonColor={black}
+                style={{ backgroundColor: principalColor }}
+                buttonColor={textLightColor}
                 mode='date'
                 onConfirm={(date) => {
                     setDtInicioOpen(false);
@@ -245,6 +245,8 @@ const FiltrosLancamento = ({onChangeFilter, selectedTransactions}: any) => {
                 modal
                 date={dtFim}
                 open={dtFimOpen}
+                style={{ backgroundColor: principalColor }}
+                buttonColor={textLightColor}
                 mode="date"
                 onConfirm={(date) => {
                     setDtFimOpen(false);
@@ -260,7 +262,7 @@ const FiltrosLancamento = ({onChangeFilter, selectedTransactions}: any) => {
 
 const styles = StyleSheet.create({
     container: {
-        // Add any container styles if needed
+        backgroundColor: backgroundColor
     },
     scrollViewContent: {
         paddingHorizontal: 10,
@@ -271,9 +273,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
-    datePicker: {
-        backgroundColor: black,
-    },
     actionContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -281,15 +280,11 @@ const styles = StyleSheet.create({
     },
     searchButton: {
         width: 200,
-        backgroundColor: gold,
+        backgroundColor: highlightColor,
         padding: 10,
         marginVertical: 10,
         borderRadius: 30,
         alignItems: 'center',
-    },
-    searchButtonText: {
-        color: black,
-        fontWeight: 'bold',
     },
     paymentPickerContainer: {
         flex: 1,

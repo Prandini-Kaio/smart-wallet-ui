@@ -27,9 +27,14 @@ export const lightBlue = '#3ac1d6';
 
 
 export const backgroundColor = white;
+
 export const principalColor = richBlack;
 export const secondaryColor = midnightGreen;
 export const clearColor = platina;
 export const shadowClearColor = skobeloff;
 
 export const highlightColor = seaBuckthorn;
+
+export const textBlackColor = black;
+export const textLightColor = white;
+export const textLightSecondaryColor = gray2;

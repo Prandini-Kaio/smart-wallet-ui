@@ -117,7 +117,12 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
           );
         })}
       </View>
-      <Text style={styles.sectionTitle}>Minhas contas</Text>
+      <View style={styles.transactionsHeader}>
+        <Text style={styles.sectionTitle}>Minhas contas</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Contas')}>
+          <Text style={styles.viewAllButton}>Ver detalhes</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={contas}
         renderItem={renderConta}
@@ -136,7 +141,7 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
 
       <View style={styles.transactionsHeader}>
         <Text style={styles.sectionTitle}>Lançamentos recentes</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('VisualizarLancamentos')}>
           <Text style={styles.viewAllButton}>Ver todos</Text>
         </TouchableOpacity>
       </View>

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { black, lightGreen } from "../../../../shared/utils/style-constants";
+import { black, highlightColor, lightGreen, secondaryColor, textBlackColor, textLightColor } from "../../../../shared/utils/style-constants";
 
 export const style = StyleSheet.create({
     container: {
@@ -9,12 +9,12 @@ export const style = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20,
-        borderColor: lightGreen,
+        borderColor: highlightColor,
         borderWidth: 1
     },
 
     moneyTxt: {
-        color: black,
+        color: textLightColor,
         fontWeight: 'bold',
         fontSize: 13
     }
