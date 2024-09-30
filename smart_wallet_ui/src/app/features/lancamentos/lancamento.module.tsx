@@ -8,6 +8,7 @@ import { formatDate } from '../../features/lancamentos/services/usecases/date-ut
 import { Conta, TipoLancamento, TotalizadorFinanceiro, useAPI } from '../../shared/services/api/api-context';
 import { handleApiError } from '../../shared/utils/errorHandler';
 import { black, gray, gray2, green, lightBlue, pewterBlue, platina, red, richBlack, white } from '../../shared/utils/style-constants';
+import FloatingButton from '../../shared/components/floating-button/floating-button';
 
 const HomeScreen: React.FC = ({ navigation }: any) => {
   const { consultar: getLancamentos } = useLancamentoService();
@@ -152,9 +153,15 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
         style={styles.transactionsList}
         scrollEnabled={true}
       />
-      <TouchableOpacity style={styles.addButton} onPress={handleAddLancamento}>
+      {/* <TouchableOpacity style={styles.addButton} onPress={handleAddLancamento}>
         <Icon name="plus" size={24} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+      <FloatingButton 
+        onContaPress={() => console.log("CONTA PRESSIONADA")}
+        onLancamentoPress={handleAddLancamento} 
+        icone={'plus'}
+      />
     </SafeAreaView>
   );
 };
