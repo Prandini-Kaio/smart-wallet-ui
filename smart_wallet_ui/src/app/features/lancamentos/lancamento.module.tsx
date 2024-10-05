@@ -4,7 +4,7 @@ import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity,
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { LancamentoFilter, LancamentoResponse } from '../../features/lancamentos/services/entity/lancamento.entity';
 import { useLancamentoService } from '../../features/lancamentos/services/lancamentos.service';
-import { formatDate } from '../../features/lancamentos/services/usecases/date-utils.service';
+import { formatDate, formatDateTime } from '../../features/lancamentos/services/usecases/date-utils.service';
 import { Conta, TipoLancamento, TotalizadorFinanceiro, useAPI } from '../../shared/services/api/api-context';
 import { handleApiError } from '../../shared/utils/errorHandler';
 import { black, gray, gray2, green, lightBlue, pewterBlue, platina, red, richBlack, white } from '../../shared/utils/style-constants';
@@ -36,7 +36,7 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
   useEffect(() => {
     try {
       const now = new Date();
-      const dayOne = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      const dayOne = new Date(now.getFullYear(), now.getMonth(), 1);
       const dayLast = new Date(now.getFullYear(), now.getMonth() + 2, 0);
 
       getContas()
@@ -55,8 +55,8 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
         tipoPagamento: '',
         status: '',
         conta: '',
-        dtInicio: formatDate(dayOne),
-        dtFim: formatDate(dayLast),
+        dtInicio: formatDateTime(dayOne),
+        dtFim: formatDateTime(dayLast),
       }
 
       getTotalizadorFilter(filter)
@@ -96,12 +96,15 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
           <Text style={styles.transactionDate}>{item.dtCriacao || 'Data indisponível'}</Text>
         </View>
         <View style={styles.transactionRight}>
-          <Text style={[
-            styles.transactionAmount,
-            { color: item.tipoLancamento === TipoLancamento.SAIDA ? red : green }
-          ]}>
-            R$ {item.valor ? item.valor.toFixed(2) : '0.00'}
-          </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={[
+              styles.transactionAmount,
+              { color: item.tipoLancamento === TipoLancamento.SAIDA ? red : green }
+            ]}>
+              R$ {item.valor ? item.valor.toFixed(2) : '0.00'}
+            </Text>
+            <Text style={styles.transactionCategory}> / {item.parcelas}</Text>
+          </View>
           <Text style={styles.transactionCategory}>{item.categoriaLancamento || 'Sem categoria'}</Text>
         </View>
       </View>
