@@ -33,10 +33,13 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
     navigation.navigate('AddContas');
   }
 
+<<<<<<< HEAD
   const handleSelectConta = () => {
 
   }
 
+=======
+>>>>>>> bc26443 (refactor: add conta form)
   useEffect(() => {
     try {
       const now = new Date();
@@ -59,8 +62,13 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
         tipoPagamento: '',
         status: '',
         conta: '',
+<<<<<<< HEAD
         dtInicio: formatDateTime(dayOne),
         dtFim: formatDateTime(dayLast),
+=======
+        dtInicio: formatDate(dayOne),
+        dtFim: formatDate(dayLast),
+>>>>>>> bc26443 (refactor: add conta form)
       }
 
       getTotalizadorFilter(filter)
