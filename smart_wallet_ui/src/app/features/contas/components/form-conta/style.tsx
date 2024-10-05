@@ -1,51 +1,69 @@
-import {StyleSheet} from 'react-native';
-import {lightGray, lightGreen, white} from '../../../../shared/utils/style-constants';
+import { StyleSheet } from 'react-native';
+import { clearColor, highlightColor, lightGray, lightGreen, red, shadowClearColor, textBlackColor, textBlackSecondaryColor, textLightColor, white } from '../../../../shared/utils/style-constants';
 
 export const style = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
     backgroundColor: white,
   },
-
-  modalBackground: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-
-  modalContainer: {
-    width: 300,
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderColor: lightGreen,
-    borderWidth: 1
+  
+  title: {
+    color: textBlackColor,
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
 
   label: {
-    color: lightGray,
+    color: textBlackSecondaryColor,
+    fontSize: 16,
     fontWeight: 'bold',
-    fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 20,
   },
 
   input: {
+    color: textBlackColor,
     height: 40,
-    borderColor: lightGray,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10
+  },
+
+  picker: {
+    height: 50,
+    marginBottom: 10,
+  },
+
+  button: {
+    backgroundColor: highlightColor,
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+
+  buttonText: {
+    color: textLightColor,
+    fontSize: 18,
+  },
+
+  errorText: {
+    color: red,
+    marginBottom: 10,
+  },
+
+  colorPreview: {
+    height: 5,
+    marginBottom: 10,
     borderWidth: 0.5,
-    marginBottom: 20,
-    padding: 10,
+    borderColor: '#000',
+    borderRadius: 2
+  },
+
+  slider: {
     width: '100%',
-    borderRadius: 10,
-    color: lightGray
+    height: 40,
   },
-
-  closeText: {
-    marginTop: 20,
-    color: 'blue',
-  },
-
 });

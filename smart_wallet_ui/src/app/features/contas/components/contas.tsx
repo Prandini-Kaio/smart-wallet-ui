@@ -4,7 +4,7 @@ import CardGastos from "../../contas/components/gastos/gastos";
 import ContasCarousell from "./cards";
 import FloatingButton from "../../../shared/components/floating-button/floating-button";
 import { useState } from "react";
-import FormAddConta from "../components/form-conta/form-conta";
+import AddConta from "../components/form-conta/form-conta";
 
 export default function Contas({ navigation }: any){
 
@@ -25,7 +25,7 @@ export default function Contas({ navigation }: any){
 
             <FloatingButton onPress={showModal} icone="plus"/>
 
-            <FormAddConta 
+            <AddConta 
                 visible={modalVisible}
                 hideModal={hideModal}
             />

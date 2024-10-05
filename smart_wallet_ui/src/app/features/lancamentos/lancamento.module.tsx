@@ -2,17 +2,18 @@ import { useIsFocused } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { LancamentoResponse } from '../../features/lancamentos/services/entity/lancamento.entity';
+import { LancamentoFilter, LancamentoResponse } from '../../features/lancamentos/services/entity/lancamento.entity';
 import { useLancamentoService } from '../../features/lancamentos/services/lancamentos.service';
 import { formatDate } from '../../features/lancamentos/services/usecases/date-utils.service';
 import { Conta, TipoLancamento, TotalizadorFinanceiro, useAPI } from '../../shared/services/api/api-context';
 import { handleApiError } from '../../shared/utils/errorHandler';
 import { black, gray, gray2, green, lightBlue, pewterBlue, platina, red, richBlack, white } from '../../shared/utils/style-constants';
 import FloatingButton from '../../shared/components/floating-button/floating-button';
+import { TransacaoFilter } from '../visualizar-lancamentos/services/entity/transacao-entity';
 
 const HomeScreen: React.FC = ({ navigation }: any) => {
   const { consultar: getLancamentos } = useLancamentoService();
-  const { getTotalizadorPeriodo, getContas } = useAPI();
+  const { getTotalizadorFilter, getContas } = useAPI();
   const isFocused = useIsFocused();
 
   const [contas, setContas] = useState<Conta[]>([]);
@@ -27,6 +28,10 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
   const handleAddLancamento = () => {
     navigation.navigate('AddLancamento');
   };
+
+  const handleAddConta = () => {
+    navigation.navigate('AddContas');
+  }
 
   useEffect(() => {
     try {
@@ -44,7 +49,17 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
           setLancamentos(result);
         });
 
-      getTotalizadorPeriodo('', formatDate(dayOne), formatDate(dayLast))
+      const filter: LancamentoFilter = {
+        categoria: '',
+        tipo: '',
+        tipoPagamento: '',
+        status: '',
+        conta: '',
+        dtInicio: formatDate(dayOne),
+        dtFim: formatDate(dayLast),
+      }
+
+      getTotalizadorFilter(filter)
         .then((result) => {
           setTotalizador(result);
         });
@@ -153,13 +168,9 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
         style={styles.transactionsList}
         scrollEnabled={true}
       />
-      {/* <TouchableOpacity style={styles.addButton} onPress={handleAddLancamento}>
-        <Icon name="plus" size={24} color="white" />
-      </TouchableOpacity> */}
-
-      <FloatingButton 
-        onContaPress={() => console.log("CONTA PRESSIONADA")}
-        onLancamentoPress={handleAddLancamento} 
+      <FloatingButton
+        onContaPress={handleAddConta}
+        onLancamentoPress={handleAddLancamento}
         icone={'plus'}
       />
     </SafeAreaView>

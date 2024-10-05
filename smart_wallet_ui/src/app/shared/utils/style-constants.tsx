@@ -36,5 +36,6 @@ export const shadowClearColor = skobeloff;
 export const highlightColor = seaBuckthorn;
 
 export const textBlackColor = black;
+export const textBlackSecondaryColor = gray;
 export const textLightColor = white;
 export const textLightSecondaryColor = gray2;

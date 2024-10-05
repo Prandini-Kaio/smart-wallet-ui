@@ -59,6 +59,7 @@ interface APIContextData {
   getTransacoes(fitler: TransacaoFilter): Promise<TransacaoResponse[]>;
   getTransacoesByLancamento(idLancamento: number): Promise<Transacao[]>;
   getTotalizadorFilter(filter: LancamentoFilter): Promise<TotalizadorFinanceiro>;
+  getTotalizadorTransacaoFilter(filter: TransacaoFilter): Promise<TotalizadorFinanceiro>;
   getTotalizadorPeriodo(
     conta: string,
     dtInicio: string,
@@ -167,6 +168,35 @@ function APIProvider({ children }: any) {
       dtInicio: filter.dtInicio,
       dtFim: filter.dtFim,
       conta: filter.conta
+    };
+
+    return new Promise<TotalizadorFinanceiro>((resolve, reject) => {
+      RequestBase<TotalizadorFinanceiro>(VerboseAPI.GET, 'transacao/totalizador', params)
+        .then(result => {
+          resolve(result.data);
+        })
+        .catch(error => {
+          handleApiError(error);
+          reject(error);
+        });
+
+    });
+  }
+
+  const getTotalizadorTransacaoFilter = (
+    filter: TransacaoFilter
+  ): Promise<TotalizadorFinanceiro> => {
+
+    const params = {
+      id: filter.id,
+      idLancamento: filter.idLancamento,
+      categoria: filter.categoria,
+      tipo: filter.tipo,
+      pagamento: filter.pagamento,
+      status: filter.status,
+      conta: filter.conta,
+      dtInicio: filter.dtInicio,
+      dtFim: filter.dtFim
     };
 
     return new Promise<TotalizadorFinanceiro>((resolve, reject) => {
@@ -327,6 +357,7 @@ function APIProvider({ children }: any) {
         getTransacoes,
         getTransacoesByLancamento,
         getTotalizadorFilter,
+        getTotalizadorTransacaoFilter,
         getTotalizadorPeriodo,
         getContas,
         getCategorias,
