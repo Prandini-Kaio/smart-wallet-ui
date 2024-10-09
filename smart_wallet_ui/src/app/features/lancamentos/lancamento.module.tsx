@@ -33,6 +33,10 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
     navigation.navigate('AddContas');
   }
 
+  const handleSelectConta = () => {
+
+  }
+
   useEffect(() => {
     try {
       const now = new Date();
@@ -138,7 +142,7 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
       </View>
       <View style={styles.transactionsHeader}>
         <Text style={styles.sectionTitle}>Minhas contas</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Contas')}>
+        <TouchableOpacity onPress={() => navigation.navigate('VisualizarContas', { selectedAccount } )}>
           <Text style={styles.viewAllButton}>Ver detalhes</Text>
         </TouchableOpacity>
       </View>

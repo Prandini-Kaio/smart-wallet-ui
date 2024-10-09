@@ -8,6 +8,7 @@ import AddLancamento from '../../../features/lancamentos/components/add-lancamen
 import { VisualizarLancamentos } from '../../../features/visualizar-lancamentos/visualiza-lancamentos.module';
 import ButtonTabBar from '../../components/button-tabbar/button-tabbar';
 import { midnightGreen, richBlack, secondaryColor, textLightColor, white } from '../../utils/style-constants';
+import ContaDetails from '../../../features/conta-details/conta-details.module';
 ;
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +19,7 @@ export default function Pages() {
     <Stack.Navigator>
       <Stack.Screen name="TabScreens" component={TabScreens} options={{ headerShown: false }} />
       <Stack.Screen name="VisualizarLancamentos" component={VisualizarLancamentos} options={{ headerTitle: "Detalhes", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
+      <Stack.Screen name="VisualizarContas" component={ContaDetails} options={{ headerTitle: "Detalhes", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
       <Stack.Screen name="AddContas" component={AddConta} options={{ headerTitle: "Nova Conta", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
       <Stack.Screen name="AddLancamento" component={AddLancamento} options={{ headerTitle: "Novo Lancamento", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
     </Stack.Navigator>
