@@ -18,8 +18,12 @@ export default function Pages() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="TabScreens" component={TabScreens} options={{ headerShown: false }} />
+<<<<<<< HEAD
       <Stack.Screen name="VisualizarLancamentos" component={VisualizarLancamentos} options={{ headerTitle: "Detalhes", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
       <Stack.Screen name="VisualizarContas" component={ContaDetails} options={{ headerTitle: "Detalhes", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
+=======
+      <Stack.Screen name="VisualizarLancamentos" component={VisualizarLancamentos} options={{ headerTitle: "Novo Lancamento", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
+>>>>>>> parent of 6957223 (fix: titulo detalhes alterado)
       <Stack.Screen name="AddContas" component={AddConta} options={{ headerTitle: "Nova Conta", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
       <Stack.Screen name="AddLancamento" component={AddLancamento} options={{ headerTitle: "Novo Lancamento", headerStyle: { backgroundColor: secondaryColor, }, headerTitleStyle: { color: textLightColor } }} />
     </Stack.Navigator>
