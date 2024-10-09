@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 import Home from '../../../core/home/home';
 import Settings from '../../../core/settings/settings';
 import AddConta from '../../../features/contas/components/form-conta/form-conta';
-import AddConta from '../../../features/contas/components/form-conta/form-conta';
 import AddLancamento from '../../../features/lancamentos/components/add-lancamento/add-lancamento';
 import { VisualizarLancamentos } from '../../../features/visualizar-lancamentos/visualiza-lancamentos.module';
 import ButtonTabBar from '../../components/button-tabbar/button-tabbar';
