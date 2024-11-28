@@ -26,8 +26,6 @@ const ContasScreen: React.FC = ({ route }: any) => {
     );
   }
 
-  console.log(`AAAAAAAAAA ${selectedAccount}`);
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container}>

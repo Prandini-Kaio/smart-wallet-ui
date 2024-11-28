@@ -55,7 +55,7 @@ export interface TotalizadorFinanceiro {
 
 interface APIContextData {
   ping(): Promise<boolean>;
-  getLancamentos(): Promise<LancamentoResponse[]>;
+  getLancamentos(filter: LancamentoFilter): Promise<LancamentoResponse[]>; 
   getTransacoes(fitler: TransacaoFilter): Promise<TransacaoResponse[]>;
   getTransacoesByLancamento(idLancamento: number): Promise<Transacao[]>;
   getTotalizadorFilter(filter: LancamentoFilter): Promise<TotalizadorFinanceiro>;
@@ -96,9 +96,9 @@ function APIProvider({ children }: any) {
     });
   }
 
-  const getLancamentos = (): Promise<LancamentoResponse[]> => {
+  const getLancamentos = (filter: LancamentoFilter): Promise<LancamentoResponse[]> => {
     return new Promise<LancamentoResponse[]>((resolve, reject) => {
-      RequestBase<LancamentoResponse[]>(VerboseAPI.GET, 'lancamento/all')
+      RequestBase<LancamentoResponse[]>(VerboseAPI.GET, 'lancamento')
         .then(result => {
           resolve(result.data);
         })
@@ -240,7 +240,7 @@ function APIProvider({ children }: any) {
 
   const getContas = (): Promise<Conta[]> => {
     return new Promise<Conta[]>((resolve, reject) => {
-      RequestBase<Conta[]>(VerboseAPI.GET, 'conta/all')
+      RequestBase<Conta[]>(VerboseAPI.GET, 'conta')
         .then(result => {
           resolve(result.data);
         })

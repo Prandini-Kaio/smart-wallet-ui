@@ -1,10 +1,6 @@
-import { _updatePropsJS } from "react-native-reanimated/lib/typescript/js-reanimated";
 import { useAPI } from "../../../shared/services/api/api-context";
-import { _cleanData, _storeData, _retrieveData } from "../../../shared/services/asyncStorage/async.service";
-import { LancamentoResponse } from "./entity/lancamento.entity";
-import { assertEasingIsWorklet } from "react-native-reanimated/lib/typescript/animation/util";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useContaService } from "../../contas/services/contas.service";
+import { _cleanData, _retrieveData, _storeData } from "../../../shared/services/asyncStorage/async.service";
+import { LancamentoFilter, LancamentoResponse } from "./entity/lancamento.entity";
 
 export const useLancamentoService = () => {
 
@@ -145,7 +141,17 @@ export const useLancamentoService = () => {
 
         console.log("Sincronizando storage local com lancamentos.");
 
-        const lancamentos = await getLancamentos();
+        const filter: LancamentoFilter = {
+            tipo: "",
+            categoria: "",
+            tipoPagamento: "",
+            status: "",
+            dtInicio: "",
+            dtFim: "",
+            conta: ""
+        }
+
+        const lancamentos = await getLancamentos(filter);
 
         await _cleanData(LANCAMENTOS_STORAGE_KEY);
         await _storeData(LANCAMENTOS_STORAGE_KEY, JSON.stringify(lancamentos.flat()));

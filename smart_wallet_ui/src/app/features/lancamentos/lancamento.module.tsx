@@ -124,7 +124,7 @@ const HomeScreen: React.FC = ({ navigation }: any) => {
       <View style={styles.balanceBar}>
         {contas.map((conta, index) => {
           const total = totalizador?.total || 1;
-          const flexValue = total > 0 ? (conta.saldoParcial ? conta.saldoParcial / total : 0) : 0;
+          const flexValue = total > 0 ? (conta.saldoParcial ? conta.saldoParcial: 0) : 0;
           return (
             <View
               key={conta.id || index}
